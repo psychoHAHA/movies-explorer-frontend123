@@ -1,2 +1,3 @@
-# movies-explorer-frontend
-Фронтенд дипломной работы
+# Frontend дипломной работы (movie-explorer)
+
+
