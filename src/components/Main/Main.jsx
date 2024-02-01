@@ -1,6 +1,12 @@
-import React from "react";
-import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import React from "react"
+import Promo from "../Promo/Promo"
 
-export default function Main({}) {
-  
+export default function Main() {
+  return (
+    <>
+      <main>
+        <Promo />
+      </main>
+    </>
+  )
 }
