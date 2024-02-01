@@ -5,5 +5,5 @@ export default function ProtectedRoute({ loggedIn, children }) {
     return <Navigate to="sign-in" replace />
   }
 
-  return children
-}
+  return children 
+} 
