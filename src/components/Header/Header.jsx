@@ -1,14 +1,14 @@
-import React from 'react'
-import { Link, useLocation, NavLink } from 'react-router-dom'
+import React from "react"
+import { Link, useLocation, NavLink } from "react-router-dom"
 
-export default function Header({ loggedIn, email, signOut }) {
+export default function Header() {
   const location = useLocation()
 
   return (
     <header className="header">
       <Link to="." className="header__link">
         <img
-          src={require('../images/logo')}
+          src="../images/logo"
           alt="logo"
           className="header__logo"
         ></img>
@@ -27,7 +27,9 @@ export default function Header({ loggedIn, email, signOut }) {
         </li>
       </ul>
 
-      <Link to='profile' className='header__link-profile'>Аккаунт</Link>
+      <Link to="profile" className="header__link-profile">
+        Аккаунт
+      </Link>
     </header>
   )
 }
