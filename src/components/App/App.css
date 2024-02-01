@@ -1,0 +1,14 @@
+.App {
+  height: 100%;
+  color: #fff;
+}
+
+body {
+  margin: 0 auto;
+  background-color: #202020;
+  min-width: 320px;
+}
+
+/* div, section, h1 {
+  outline: 1px solid red;
+} */
