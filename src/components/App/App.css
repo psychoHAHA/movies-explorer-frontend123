@@ -7,6 +7,12 @@ body {
   margin: 0 auto;
   background-color: #202020;
   min-width: 320px;
+  font-family: "Inter", Arial, sans-serif;
+  scroll-behavior: smooth;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 /* div, section, h1 {

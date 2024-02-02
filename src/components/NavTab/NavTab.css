@@ -5,7 +5,7 @@
   justify-content: center;
   margin: 0 auto;
   gap: 6px;
-  padding: 211px 0 17px;
+  padding: 209px 0 17px;
 }
 
 .nav__link {
@@ -35,6 +35,19 @@
   .nav {
     gap: 10px;
     padding: 312px 0 17px;
+  }
+
+  .nav__link {
+    width: 96px;
+    height: 36px;
+    font-size: 12px;
+  }
+}
+
+
+@media screen and (min-width: 880px) {
+  .nav {
+    padding: 150px 0 17px;
   }
 
   .nav__link {
