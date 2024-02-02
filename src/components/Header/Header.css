@@ -28,6 +28,7 @@
 .header__account-menu {
   display: flex;
   gap: 14px;
+  padding: 0 15px 0 0;
 }
 
 .header__button {
@@ -53,6 +54,10 @@
 }
 
 @media screen and (min-width: 645px) {
+  .header {
+    padding: 30px 24px 0;
+  }
+
   .header__button {
     font-size: 12px;
     padding: 8px 20px;

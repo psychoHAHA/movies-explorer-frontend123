@@ -1,12 +1,12 @@
 .promo {
-  height: 586px;
+  height: 366px;
   max-width: calc(100%-28px);
   background-color: #272727;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   margin: 0 14px;
-  padding: 220px 10px 0;
+  padding: 209px 10px 0;
 }
 
 .promo__title {
@@ -21,14 +21,30 @@
 
 @media screen and (min-width: 645px) {
   .promo {
-    height: 834px;
+    height: 446px;
     max-width: calc(100%-40px);
-    padding: 152px 0 37px;
+    padding: 348px 0 36px;
   }
 
   .promo__title {
     font-size: 40px;
     font-weight: 400;
     line-height: 52px;
+    letter-spacing: 3px;
+  }
+}
+
+@media screen and (min-width: 880px) {
+  .promo {
+    height: 493px;
+    max-width: calc(100%-80px)
+  }
+
+  .promo__title {
+    font-size: 50px;
+    line-height: 58px;
+    max-width: 730px;
+    text-align: center;
+    margin: 0 auto;
   }
 }
