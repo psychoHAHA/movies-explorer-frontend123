@@ -15,7 +15,7 @@ export default function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
         <Header />
-
+        
         <Routes>
           <Route exact path="/" element={<Main />}></Route>
         </Routes>
