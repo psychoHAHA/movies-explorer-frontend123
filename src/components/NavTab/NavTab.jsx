@@ -6,7 +6,7 @@ export default function NavTab() {
       <nav className="nav">
         <a href="#AboutProject" className="nav__link">О проекте</a>
         <a href="#Techs" className="nav__link">Технологии</a>
-        <a href="#" className="nav__link">Студент</a>
+        <a href="#AboutMe" className="nav__link">Студент</a>
       </nav>
     </>
   )
