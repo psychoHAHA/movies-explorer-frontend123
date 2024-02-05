@@ -32,7 +32,7 @@ export default function Header() {
       </ul> */}
 
       <div className="header__account-menu">
-        <Link to="signup">
+        <Link to="/singup">
           <button
             className="header__button header__button-signup"
             type="button"
@@ -41,7 +41,7 @@ export default function Header() {
           </button>
         </Link>
 
-        <Link to="signin">
+        <Link to="/signin">
           <button
             className="header__button header__button-signin"
             type="button"
