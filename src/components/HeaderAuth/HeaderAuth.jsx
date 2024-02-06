@@ -1,23 +1,15 @@
-import React from "react"
+import React, { useState } from "react"
 import { Link, useLocation, NavLink } from "react-router-dom"
 
 import "./HeaderAuth.css"
 
 export default function HeaderAuth() {
   const location = useLocation()
-
-  // const burger = document.getElementById("burger")
-  // const nav = document.getElementById("nav")
-
-  // burger.addEventListener("click", () => {
-  //   nav.classList.toggle("header__navbar--active")
-  //   burger.classList.toggle("header__burger--active")
-  //   document.body.classList.toggle("stop-scroll")
-  // })
+  const [ isOpen, setIsOpen] = useState()
 
   return (
     <>
-      <ul className="header__navbar" id="nav">
+      <ul className={`header__navbar ${isOpen ? "header__navbar--active" : ""}`} >
         <li className="header__navbar-item">
           <NavLink to="/" className="header__navbar-item_type_link">
             Главная
@@ -40,7 +32,7 @@ export default function HeaderAuth() {
         </button>
       </Link>
 
-      <button className="header__burger" id="burger">
+      <button className={`header__burger ${isOpen ? "header__burger--active" : ""}`} onClick={() => setIsOpen(!isOpen)}>
         <span className="header__burger-line "></span>
         <span className="header__burger-line"></span>
         <span className="header__burger-line"></span>
