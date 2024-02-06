@@ -8,8 +8,8 @@ export default function Footer() {
         <div className="footer__info">
           <p className="footer__time">©2024</p>
           <div className="footer__links">
-            <a href="" className="footer__link">Яндекс.Практикум</a>
-            <a href="" className="footer__link">Github</a>
+            <a href="https://practicum.yandex.ru/" className="footer__link" target="_blank" rel="noreferrer">Яндекс.Практикум</a>
+            <a href="https://github.com/" className="footer__link" target="_blank" rel="noreferrer">Github</a>
           </div>
         </div>
       </footer>
