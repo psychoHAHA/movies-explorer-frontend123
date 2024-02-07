@@ -1,5 +1,7 @@
 .App {
   height: 100%;
+  width: 100%;
+  max-width: 100%;
   color: #fff;
 }
 
@@ -16,6 +18,9 @@ body {
 
 html {
   scroll-behavior: smooth;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 /* div, section, h1 {
