@@ -9,6 +9,7 @@ import ProtectedRoute from "../ProtectedRoute"
 import Register from "../Register/Register"
 import Login from "../Login/Login"
 import Movies from "../Movies/Movies"
+import Profile from "../Profile/Profile"
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState()
@@ -26,6 +27,7 @@ export default function App() {
           <Route exact path="/" element={<Main />}></Route>
           <Route exact path="/singup" element={<Register />}></Route>
           <Route exact path="/signin" element={<Login />}></Route>
+          <Route exact path="profile" element={<Profile />}></Route>
           <Route exact path="/movies" element={<Movies />} />
         </Routes>
       </div>
