@@ -14,6 +14,7 @@
   transition: transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
   transform: translateY(-100%);
   visibility: hidden;
+  z-index: 2;
 }
 
 .header__navbar-list {
@@ -72,6 +73,7 @@
   background-color: transparent;
   border: none;
   cursor: pointer;
+  z-index: 2;
 }
 
 .header__burger-line {
