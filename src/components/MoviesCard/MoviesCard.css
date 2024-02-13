@@ -60,3 +60,26 @@
   background-color: #2F2F2F;
   border-radius: 2px;
 }
+
+.movies-card__button-selected {
+  font-size: 0;
+  background-image: url("../../images/imageGalka.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #EE3465;
+  padding: 0;
+  width: 21px;
+  height: 21px;
+}
+
+.movies-card__button-cross {
+  font-size: 0;
+  background-image: url("../../images/imageCross.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #313131;
+  outline: none;
+  padding: 0;
+  width: 21px;
+  height: 21px;
+}

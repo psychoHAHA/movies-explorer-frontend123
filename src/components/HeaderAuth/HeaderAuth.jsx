@@ -6,6 +6,7 @@ import "./HeaderAuth.css"
 export default function HeaderAuth() {
   const location = useLocation()
   const [isOpen, setIsOpen] = useState()
+  const [isActive, setIsActive] = useState()
 
   return (
     <>
