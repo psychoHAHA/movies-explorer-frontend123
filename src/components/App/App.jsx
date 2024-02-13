@@ -10,6 +10,8 @@ import Register from "../Register/Register"
 import Login from "../Login/Login"
 import Movies from "../Movies/Movies"
 import Profile from "../Profile/Profile"
+import SavedMovies from "../SavedMovies/SavedMovies"
+import ErrorNotFound from "../ErrorNotFound/ErrorNotFound"
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState()
@@ -29,6 +31,8 @@ export default function App() {
           <Route exact path="/signin" element={<Login />}></Route>
           <Route exact path="profile" element={<Profile />}></Route>
           <Route exact path="/movies" element={<Movies />} />
+          <Route exact path="/saved-movies" element={<SavedMovies />} />
+          <Route exact path="/404" element={<ErrorNotFound />} />
         </Routes>
       </div>
     </CurrentUserContext.Provider>
