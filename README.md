@@ -2,4 +2,4 @@
 
 ## Ссылки
 
-### Frontend: [text](https://github.com/psychoHAHA/movies-explorer-frontend)
+### Frontend: (https://github.com/psychoHAHA/movies-explorer-frontend)
