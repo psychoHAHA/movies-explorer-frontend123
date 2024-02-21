@@ -17,11 +17,11 @@ export default function Login() {
       <form className="auth__form">
         <div className="auth__inputs">
           <label className="auth__label">E-mail</label>
-          <input type="email" name="name" className="auth__input" />
+          <input type="email" name="name" className="auth__input" required />
         </div>
         <div className="auth__inputs">
           <label className="auth__label">Пароль</label>
-          <input type="password" name="name" className="auth__input" />
+          <input type="password" name="name" className="auth__input" required />
         </div>
       </form>
       <button className="auth__button">Войти</button>
