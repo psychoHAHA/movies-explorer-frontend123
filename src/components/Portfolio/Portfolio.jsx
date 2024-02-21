@@ -4,7 +4,7 @@ import linkImage from "../../images/linkImage.svg"
 export default function Portfolio() {
   return (
     <>
-      <div className="portfolio">
+      <section className="portfolio">
         <h3 className="portfolio__title">Портфолио</h3>
         <ul className="portfolio__links">
           <li className="portfolio__links-type_item">
@@ -41,7 +41,7 @@ export default function Portfolio() {
             </a>
           </li>
         </ul>
-      </div>
+      </section>
     </>
   )
 }

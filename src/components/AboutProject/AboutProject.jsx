@@ -3,9 +3,9 @@ import "./AboutProject.css"
 export default function AboutProject() {
   return (
     <>
-      <div className="about" id="AboutProject">
+      <section className="about" id="AboutProject">
         <h2 className="about__title">О проекте</h2>
-        <section className="about__section">
+        <div className="about__section">
           <div className="about__container">
             <h3 className="about__container-type_title">
               Дипломный проект включал 5 этапов
@@ -24,8 +24,8 @@ export default function AboutProject() {
               соблюдать, чтобы успешно защититься.
             </p>
           </div>
-        </section>
-        <section className="about__diagram">
+        </div>
+        <div className="about__diagram">
           <div className="about__diagram-backend">
             <p className="about__diagram-type_time about__diagram-backend-type_time">1 неделя</p>
             <p className="about__diagram-type_title">Back-end</p>
@@ -34,8 +34,8 @@ export default function AboutProject() {
             <p className="about__diagram-type_time about__diagram-frontend-type_time">4 недели</p>
             <p className="about__diagram-type_title">Front-end</p>
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
     </>
   )
 }

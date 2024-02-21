@@ -11,8 +11,7 @@
   justify-content: space-between;
   align-items: center;
   text-align: center;
-  transition: transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
-  transform: translateY(-100%);
+  transition: all 0.3s ease-in-out;
   visibility: hidden;
   z-index: 2;
 }
@@ -26,7 +25,6 @@
 }
 
 .header__navbar--active {
-  transform: none;
   visibility: visible;
 }
 
