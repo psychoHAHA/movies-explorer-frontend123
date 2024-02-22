@@ -1,6 +1,7 @@
 .footer {
-  margin: 0 10px;
+  margin: auto 10px 0;
   padding: 79px 0 0 0;
+  box-sizing: border-box;
 }
 
 .footer__title {
@@ -53,7 +54,7 @@
 
 @media screen and (min-width: 645px) {
   .footer {
-    margin: 0 30px;
+    margin: auto 30px 0;
   }
 
   .footer__title {
@@ -85,6 +86,6 @@
 
 @media screen and (min-width: 880px) {
   .footer {
-    margin: 0 70px;
+    margin: auto 70px 0;
   }
 }
