@@ -11,7 +11,7 @@ export default function Main() {
   return (
     <>
     <Header />
-      <main>
+      <main className="page">
         <Promo />
         <AboutProject />
         <Techs />
