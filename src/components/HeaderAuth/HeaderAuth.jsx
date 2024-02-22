@@ -1,21 +1,23 @@
-import React, { useState } from "react"
-import { Link, useLocation, NavLink } from "react-router-dom"
+import React, { useState } from 'react'
+import { Link, useLocation, NavLink } from 'react-router-dom'
 
-import "./HeaderAuth.css"
+import './HeaderAuth.css'
 
 export default function HeaderAuth() {
   const location = useLocation()
   const [isOpen, setIsOpen] = useState()
-  const [isActive, setIsActive] = useState()
 
   return (
     <>
       <nav
-        className={`header__navbar ${isOpen ? "header__navbar--active" : ""}`}
+        className={`header__navbar ${isOpen ? 'header__navbar--active' : ''}`}
       >
         <ul className="header__navbar-list">
           <li className="header__navbar-item">
-            <NavLink to="/" className="header__navbar-item_type_link header__navbar-item_type_main" >
+            <NavLink
+              to="/"
+              className="header__navbar-item_type_link header__navbar-item_type_main"
+            >
               Главная
             </NavLink>
           </li>
@@ -45,7 +47,8 @@ export default function HeaderAuth() {
       </nav>
 
       <button
-        className={`header__burger ${isOpen ? "header__burger--active" : ""}`}
+        type="button"
+        className={`header__burger ${isOpen ? 'header__burger--active' : ''}`}
         onClick={() => setIsOpen(!isOpen)}
       >
         <span className="header__burger-line "></span>

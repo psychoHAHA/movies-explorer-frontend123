@@ -1,7 +1,6 @@
 .App {
-  height: 100%;
-  width: 100%;
   max-width: 100%;
+  min-height: 100%;
   color: #fff;
 }
 
@@ -9,6 +8,9 @@ body {
   margin: 0 auto;
   background-color: #202020;
   min-width: 320px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   font-family: "Inter", Arial, sans-serif;
 }
 
@@ -19,8 +21,7 @@ body {
 html {
   scroll-behavior: smooth;
   width: 100%;
-  max-width: 100%;
-  min-height: 100vh;
+  height: 100%;
   overflow-x: hidden;
 }
 

@@ -12,8 +12,10 @@
   align-items: center;
   text-align: center;
   transition: all 0.3s ease-in-out;
+  transform: translateY(-100%);
   visibility: hidden;
   z-index: 2;
+  overflow-y: hidden;
 }
 
 .header__navbar-list {
@@ -25,6 +27,7 @@
 }
 
 .header__navbar--active {
+  transform: none;
   visibility: visible;
 }
 
