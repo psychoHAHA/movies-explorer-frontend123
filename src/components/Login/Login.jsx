@@ -24,10 +24,10 @@ export default function Login() {
           <input type="password" name="name" className="auth__input" required />
         </div>
       </form>
-      <button className="auth__button">Войти</button>
+      <button className="auth__button" type="submit">Войти</button>
         <p className="auth__text">
         Ещё не зарегистрированы?
-        <a href="/signin" className="auth__link" >Регистрация</a>
+        <a href="/signup" className="auth__link" >Регистрация</a>
         </p>
     </div>
   )
