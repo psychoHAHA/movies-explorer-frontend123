@@ -2,6 +2,8 @@ import React, { useState } from "react"
 import { Route, Routes, Navigate, useNavigate } from "react-router-dom"
 import { CurrentUserContext } from "../../contexts/CurrentUserContext"
 
+import * as mainApi from "../../utils/MainApi.js"
+
 import "./App.css"
 
 import Main from "../Main/Main"
@@ -22,16 +24,46 @@ export default function App() {
     password: "",
   })
 
+  const navigate = useNavigate()
+
+  const handleRegister = (name, email, password) => {
+    mainApi
+      .register(name, email, password)
+      .then(() => {
+        navigate("/signin", { replace: true })
+      })
+      .catch((err) => console.log(err))
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
         <Routes>
           <Route exact path="/" element={<Main />}></Route>
-          <Route exact path="/singup" element={<Register />}></Route>
+
+          <Route exact path="/signup" element={<Register />}></Route>
           <Route exact path="/signin" element={<Login />}></Route>
-          <Route exact path="profile" element={<Profile />}></Route>
-          <Route exact path="/movies" element={<Movies />} />
-          <Route exact path="/saved-movies" element={<SavedMovies />} />
+          <Route
+            exact
+            path="/profile"
+            element={
+              <ProtectedRoute element={<Profile />} loggedIn={loggedIn} />
+            }
+          ></Route>
+          <Route
+            exact
+            path="/movies"
+            element={
+              <ProtectedRoute element={<Movies />} loggedIn={loggedIn} />
+            }
+          />
+          <Route
+            exact
+            path="/saved-movies"
+            element={
+              <ProtectedRoute element={<SavedMovies />} loggedIn={loggedIn} />
+            }
+          />
           <Route exact path="/404" element={<ErrorNotFound />} />
         </Routes>
       </div>

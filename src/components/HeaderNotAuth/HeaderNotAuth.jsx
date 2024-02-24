@@ -8,7 +8,7 @@ export default function HeaderNotAuth() {
   return (
     <>
       <div className="header__account-menu">
-        <Link to="/singup">
+        <Link to="/signup">
           <button
             className="header__button header__button-signup"
             type="button"
