@@ -21,6 +21,7 @@ export default function SearchForm() {
               id="checkbox"
               className="search-form__checkbox"
             />
+            <span className="auth__input-error"></span>
             <span className="search-form__span">Короткометражки</span>
           </label>
         </div>
