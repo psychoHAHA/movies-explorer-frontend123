@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { Route, Routes, Navigate, useNavigate } from 'react-router-dom'
 import { CurrentUserContext } from '../../contexts/CurrentUserContext'
 
-import mainApi from '../../utils/MainApi'
+// import * as mainApi from '../../utils/MainApi'
+
+import mainApi from '../../utils/MainApi.js'
 
 import './App.css'
 
@@ -26,37 +28,17 @@ export default function App() {
 
   const navigate = useNavigate()
 
-  const handleRegister = (name, email, password) => {
+  const handleRegister = ({ name, email, password }) => {
     mainApi
-      .register(name, email, password)
+      .register({ name, email, password })
       .then(() => {
-        navigate('/sign-in', { replace: true });
+        navigate('/login', { replace: true });
       })
 
       .catch((err) => {
         console.log(err);
       });
   };
-
-  const checkToken = () => {
-    const token = localStorage.getItem('jwt');
-
-    if (token) {
-      mainApi
-        .getContent(token)
-        .then((res) => {
-          setLoggedIn(true);
-          setEmail(res.data.email);
-          navigate('/', { replace: true });
-        })
-
-        .catch((err) => console.log(err));
-    }
-  };
-
-  useEffect(() => {
-    checkToken();
-  }, []);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>

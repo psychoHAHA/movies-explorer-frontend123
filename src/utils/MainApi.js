@@ -67,40 +67,34 @@ class MainApi {
   }
 
   _getResponse(res) {
-    if (res.ok) {
-      return res.json()
-    } else {
-      return res.json().then((err) => {
-        return Promise.reject(`Ошибка: ${res.status} ${err.message}`)
-      })
-    }
+    if(res.ok) {
+      return res.json()}
+
+      return Promise.reject(`Ошибка: ${res.status}`);
   }
 
-  register({ name, email, password }) {
-    return fetch(`${this._baseUrl}/signup`, {
+  _request(url, options) {
+    return fetch(url, options).then(this._getResponse)
+  }
+
+  
+  register(name, email, password) {
+    return this._request(`${this._url}/signup`, {
+      headers: this._headers,  
       method: 'POST',
-      headers: this._headers,
-      body: JSON.stringify({ name, email, password }),
-    });
-  }
-
-
-  checkToken(jwt) {
-    return fetch(`${this._baseUrl}/users/me`, {
-      method: 'GET',
-      headers: {
-        ...this._headers,
-        authorization: `Bearer ${jwt}`,
-      },
-    });
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        password: password
+      })
+    }) 
   }
 }
 
+
 const mainApi = new MainApi({
-  baseUrl: "https://api.psychodelic.movie.nomoredomainsmonster.ru",
-  headers: {
-    'Content-Type': 'application/json',
-  }
+  'Content-Type': 'application/json',
+  baseUrl: "https://api.psychodelic.movie.nomoredomainsmonster.ru"
 })
 
 export default mainApi
