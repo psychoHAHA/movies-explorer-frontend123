@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Route, Routes, Navigate, useNavigate } from 'react-router-dom'
 import { CurrentUserContext } from '../../contexts/CurrentUserContext'
 
-import * as mainApi from '../../utils/MainApi.js'
+import mainApi from '../../utils/MainApi'
 
 import './App.css'
 
