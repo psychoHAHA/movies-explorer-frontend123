@@ -29,7 +29,7 @@ export default function App() {
   const navigate = useNavigate()
 
   const handleRegister = ({ name, email, password }) => {
-    return mainApi
+    mainApi
       .register({ name, email, password })
       .then(() => {
         navigate('/login', { replace: true });

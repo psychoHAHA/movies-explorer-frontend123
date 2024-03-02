@@ -77,15 +77,18 @@ class MainApi {
     return fetch(`${this._baseUrl}/signup`, {
       method: 'POST',
       headers: this._headers,
-      body: JSON.stringify({ name, email, password }),
+      body: JSON.stringify({ name: name, email: email, password: password }),
     }).then((response) => this.getResponse(response));
   }
 }
 
 
 const mainApi = new MainApi({
-  'Content-Type': 'application/json',
-  baseUrl: "https://api.psychodelic.movie.nomoredomainsmonster.ru"
+  baseUrl: "https://api.psychodelic.movie.nomoredomainsmonster.ru",
+  headers: {
+    'Accept': 'application/json',
+    "Content-Type": "application/json",
+  }
 })
 
 export default mainApi
