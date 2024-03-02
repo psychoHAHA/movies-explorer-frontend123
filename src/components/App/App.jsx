@@ -28,9 +28,9 @@ export default function App() {
 
   const navigate = useNavigate()
 
-  const handleRegister = ({ name, email, password }) => {
+  const handleRegister = (name, email, password) => {
     mainApi
-      .register({ name, email, password })
+      .register(name, email, password)
       .then(() => {
         navigate('/login', { replace: true });
       })
@@ -47,7 +47,6 @@ export default function App() {
           <Route exact path="/" element={<Main />}></Route>
 
           <Route
-            exact
             path="/signup"
             element={<Register onRegister={handleRegister} />}
           ></Route>

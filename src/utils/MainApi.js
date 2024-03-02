@@ -72,22 +72,13 @@ class MainApi {
 
       return Promise.reject(`Ошибка: ${res.status}`);
   }
-
-  _request(url, options) {
-    return fetch(url, options).then(this._getResponse)
-  }
-
   
-  register(name, email, password) {
-    return this._request(`${this._url}/signup`, {
-      headers: this._headers,  
+  register({ name, email, password }) {
+    return fetch(`${this._baseUrl}/signup`, {
       method: 'POST',
-      body: JSON.stringify({
-        name: name,
-        email: email,
-        password: password
-      })
-    }) 
+      headers: this._headers,
+      body: JSON.stringify({ name, email, password }),
+    });
   }
 }
 
