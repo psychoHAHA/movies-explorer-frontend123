@@ -22,8 +22,7 @@ export default function Register({ onRegister }) {
   const handleSubmit = (e) => {
     e.preventDefault()
     const { name, email, password } = formValue
-    console.log(formValue);
-    onRegister(name, email, password)
+    return onRegister({ name, email, password })
   }
 
   return (
@@ -75,7 +74,7 @@ export default function Register({ onRegister }) {
             />
           </div>
 
-          <button type="submit" className="auth__button">
+          <button type="submit" className="auth__button" onSubmit={handleSubmit}>
           Зарегистроваться
         </button>
         </form>

@@ -28,11 +28,12 @@ export default function App() {
 
   const navigate = useNavigate()
 
-  const handleRegister = (name, email, password) => {
-    mainApi
-      .register(name, email, password)
+  const handleRegister = ({ name, email, password }) => {
+    return mainApi
+      .register({ name, email, password })
       .then(() => {
         navigate('/login', { replace: true });
+        console.log(name)
       })
 
       .catch((err) => {

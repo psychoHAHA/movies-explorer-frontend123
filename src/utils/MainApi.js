@@ -66,7 +66,7 @@ class MainApi {
     this._headers = headers
   }
 
-  _getResponse(res) {
+  getResponse(res) {
     if(res.ok) {
       return res.json()}
 
@@ -78,7 +78,7 @@ class MainApi {
       method: 'POST',
       headers: this._headers,
       body: JSON.stringify({ name, email, password }),
-    });
+    }).then((response) => this.getResponse(response));
   }
 }
 
