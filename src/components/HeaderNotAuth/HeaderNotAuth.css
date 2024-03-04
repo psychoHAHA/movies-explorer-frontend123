@@ -7,12 +7,22 @@
 .header__button-signup {
   background-color: transparent;
   color: #fff;
+  transition: all .2s ease;
+}
+
+.header__button-signup:hover {
+  opacity: .7;
 }
 
 .header__button-signin {
   background-color: #3ddc84;
   border-radius: 4px;
   color: #000;
+  transition: all .2s ease;
+}
+
+.header__button-signin:hover {
+  opacity: .7;
 }
 
 @media screen and (min-width: 645px) {

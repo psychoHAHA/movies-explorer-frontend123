@@ -1,18 +1,16 @@
-// import React from 'react';
-// import { Navigate } from "react-router-dom";
+import React from 'react';
+import { Navigate } from "react-router-dom";
 
-// const ProtectedRouteElement = ({ element: Component, ...props  }) => {
+// const ProtectedRoute = ({element: Component, ...props}) => {
 //   return (
-//     props.loggedIn ? <Component {...props} /> : <Navigate to="/login" replace/>
-// )}
+//     props.loggedIn ? <Component {...props} /> : <Navigate to="/signin" replace />
+// )};
 
-// export default ProtectedRouteElement;
-
-import { Navigate } from "react-router-dom"
+// export default ProtectedRoute;
 
 function ProtectedRoute({loggedIn, children}) {
   if (!loggedIn) {
-    return <Navigate to="/sign-in" replace />
+    return <Navigate to="/signin" replace />
   }
   return children
 }
