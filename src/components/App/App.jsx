@@ -10,19 +10,15 @@ import SavedMovies from './../SavedMovies/SavedMovies'
 import Profile from './../Profile/Profile'
 import Login from './../Login/Login'
 import Register from './../Register/Register'
-import NotFound from './../ErrorNotFound/ErrorNotFound'
-// import InfoTooltip from './../InfoTooltip/InfoTooltip';
+import ErrorNotFound from './../ErrorNotFound/ErrorNotFound'
 import ProtectedRoute from './../ProtectedRoute/ProtectedRoute'
 
 import { CurrentUserContext } from './../../contexts/CurrentUserContext'
-import { IsLoadingContext } from './../../contexts/IsLoadingContext'
 import { MoviesContext } from '../../contexts/MoviesContext'
-import { InfoTooltipContext } from './../../contexts/InfoTooltipContext'
 
 import mainApi from './../../utils/MainApi'
 import movieApi from './../../utils/MoviesApi'
-import moviesDataAdapter from './../../utils/moviesDataAdapter.js'
-import { apiErrorMessages } from './../../constants/constants.js'
+import moviesData from './../../utils/moviesDataAdapter.js'
 
 function App() {
   const navigate = useNavigate()
@@ -35,15 +31,9 @@ function App() {
   const [savedMoviesList, setSavedMoviesList] = useState([])
   const [isLoading, setIsLoading] = useState(false)
 
-  const [infoTooltipContent, setInfoTooltipContent] = useState({
-    isFail: true,
-    text: apiErrorMessages.defaultError,
-  })
-  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false)
-
   const [currentUser, setCurrentUser] = useState({})
 
-  function authToken(token) {
+  function checkToken(token) {
     const path = location.pathname
     mainApi
       .tokenCheck(token)
@@ -58,8 +48,6 @@ function App() {
         }
       })
       .catch((err) => {
-        setIsInfoTooltipOpen(true)
-        setInfoTooltipContent({ isFail: true, text: err })
         console.log(err)
         navigate(path, { replace: true })
       })
@@ -68,7 +56,7 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem('token')
     if (token) {
-      authToken(token)
+      checkToken(token)
     }
   }, [])
 
@@ -76,35 +64,19 @@ function App() {
     if (loggedIn) {
       const token = localStorage.getItem('token')
 
-      mainApi.setAuthorizationHeader(token)
+      mainApi.setAuthorization(token)
       Promise.all([mainApi.getUserInfo(), mainApi.getMovies()])
         .then(([userData, savedMovies]) => {
           setCurrentUser(userData)
           setSavedMoviesList(savedMovies)
         })
         .catch((err) => {
-          setIsInfoTooltipOpen(true)
-          setInfoTooltipContent({ isFail: true, text: err })
+          console.log(err)
         })
     }
   }, [loggedIn])
 
-  function handleLogin(email, password) {
-    return mainApi.authorize(email, password).then((res) => {
-      if (!res.ok) {
-        return Promise.reject(res)
-      } else {
-        return res.json().then((res) => {
-          setLoggedIn(true)
-          localStorage.setItem('token', res.token)
-          localStorage.setItem('loggedIn', 'true')
-          navigate('/movies')
-        })
-      }
-    })
-  }
-
-  function handleRegister(name, email, password) {
+  const handleRegister = (name, email, password) => {
     return mainApi.register(name, email, password).then((res) => {
       if (!res.ok) {
         return Promise.reject(res)
@@ -119,24 +91,46 @@ function App() {
     })
   }
 
-  function fetchAllMovies() {
-    setIsLoading(true)
+  const handleLogin = (email, password) => {
+    return mainApi.authorize(email, password).then((res) => {
+      if (!res.ok) {
+        return Promise.reject(res)
+      } else {
+        return res.json().then((res) => {
+          setLoggedIn(true)
+          localStorage.setItem('token', res.token)
+          localStorage.setItem('loggedIn', 'true')
+          navigate('/movies')
+        })
+      }
+    })
+  }
 
+  const handleLogout = () => {
+    setLoggedIn(false)
+    setCurrentUser({})
+    localStorage.removeItem('token')
+    localStorage.clear()
+    localStorage.setItem('loggedIn', 'false')
+    navigate('/', { replace: true })
+  }
+
+  const getAllMovies = () => {
     return movieApi.getMovies().then((movies) => {
-      const adaptedMovies = movies.map((movie) => moviesDataAdapter(movie))
+      const adaptedMovies = movies.map((movie) => moviesData(movie))
       setMoviesList(adaptedMovies)
       setIsApiError(false)
       return adaptedMovies
     })
   }
 
-  function saveMovie(movie) {
+  const saveMovie = (movie) => {
     return mainApi.createMovie(movie).then((movieData) => {
       setSavedMoviesList([...savedMoviesList, movieData])
     })
   }
 
-  function deleteMovie(movieId) {
+  const deleteMovie = (movieId) => {
     const savedMovie = savedMoviesList.find((item) => item.movieId === movieId)
     return mainApi.deleteMovie(savedMovie._id).then((res) => {
       setSavedMoviesList(
@@ -146,99 +140,280 @@ function App() {
     })
   }
 
-  function handleLogout() {
-    setLoggedIn(false)
-    setCurrentUser({})
-    localStorage.removeItem('token')
-    localStorage.clear()
-    localStorage.setItem('loggedIn', 'false')
-    navigate('/', { replace: true })
-  }
-
   return (
     <>
       <CurrentUserContext.Provider
         value={{ currentUser, setCurrentUser, loggedIn, setLoggedIn }}
       >
-        <IsLoadingContext.Provider value={{ isLoading, setIsLoading }}>
-          <InfoTooltipContext.Provider
-            value={{
-              infoTooltipContent,
-              setInfoTooltipContent,
-              isInfoTooltipOpen,
-              setIsInfoTooltipOpen,
-            }}
-          >
-            <MoviesContext.Provider
-              value={{
-                moviesList,
-                setMoviesList,
-                savedMoviesList,
-                setSavedMoviesList,
-                saveMovie,
-                deleteMovie,
-              }}
-            >
-              <Routes>
-                <Route path="/" element={<Layout />}>
-                  <Route index element={<Main />} />
+        <MoviesContext.Provider
+          value={{
+            moviesList,
+            setMoviesList,
+            savedMoviesList,
+            setSavedMoviesList,
+            saveMovie,
+            deleteMovie,
+          }}
+        >
+          <Routes>
 
-                  <Route
-                    path="movies"
-                    element={
-                      <ProtectedRoute loggedIn={loggedIn}>
-                        <Movies
-                          fetchAllMovies={fetchAllMovies}
-                          isApiError={isApiError}
-                          setIsApiError={setIsApiError}
-                        />
-                      </ProtectedRoute>
-                    }
+          <Route
+              path="signin"
+              element={<Login onLogin={handleLogin} loggedIn={loggedIn} />}
+            />
+
+            <Route
+              path="signup"
+              element={
+                <Register onRegister={handleRegister} loggedIn={loggedIn} />
+              }
+            />
+
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Main />} />
+
+              <Route
+                path="movies"
+                element={
+                  <ProtectedRoute loggedIn={loggedIn}>
+                    <Movies
+                      getAllMovies={getAllMovies}
+                      isApiError={isApiError}
+                      setIsApiError={setIsApiError}
+                    />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="saved-movies"
+                element={
+                  <ProtectedRoute loggedIn={loggedIn}>
+                    <SavedMovies />
+                  </ProtectedRoute>
+                }
+              />
+            </Route>
+
+            <Route
+              path="profile"
+              element={
+                <ProtectedRoute loggedIn={loggedIn}>
+                  <Profile
+                    onLogout={handleLogout}
+                    isApiError={isApiError}
+                    setIsApiError={setIsApiError}
                   />
+                </ProtectedRoute>
+              }
+            />
 
-                  <Route
-                    path="saved-movies"
-                    element={
-                      <ProtectedRoute loggedIn={loggedIn}>
-                        <SavedMovies />
-                      </ProtectedRoute>
-                    }
-                  />
-                </Route>
-
-                <Route
-                  path="profile"
-                  element={
-                    <ProtectedRoute loggedIn={loggedIn}>
-                      <Profile
-                        onLogout={handleLogout}
-                        isApiError={isApiError}
-                        setIsApiError={setIsApiError}
-                      />
-                    </ProtectedRoute>
-                  }
-                />
-
-                <Route path="*" element={<NotFound />} />
-
-                <Route
-                  path="signin"
-                  element={<Login onLogin={handleLogin} loggedIn={loggedIn} />}
-                />
-
-                <Route
-                  path="signup"
-                  element={
-                    <Register onRegister={handleRegister} loggedIn={loggedIn} />
-                  }
-                />
-              </Routes>
-            </MoviesContext.Provider>
-          </InfoTooltipContext.Provider>
-        </IsLoadingContext.Provider>
+            <Route path="*" element={<ErrorNotFound />} />
+          </Routes>
+        </MoviesContext.Provider>
       </CurrentUserContext.Provider>
     </>
   )
 }
 
 export default App
+
+// import './App.css'
+
+// import { useEffect, useState } from 'react'
+// import { Routes, Route, useNavigate } from 'react-router-dom'
+
+// import Layout from '../Layout/Layout'
+// import Main from '../Main/Main'
+// import Register from '../Register/Register'
+// import Login from '../Login/Login'
+
+// import Movies from '../Movies/Movies'
+
+// import mainApi from '../../utils/MainApi'
+// import movieApi from '../../utils/MoviesApi'
+
+// import movieApiURL from '../../constants/constants.js'
+// import { CurrentUserContext } from '../../contexts/CurrentUserContext.jsx'
+// import { ProtectedRoute } from '../ProtectedRoute/ProtectedRoute'
+// import {
+//   moviesContext,
+//   MoviesContext,
+// } from '../../contexts/MoviesContext.jsx'
+
+// function App() {
+//   const navigate = useNavigate()
+
+//   const loggedInLocalStorage = JSON.parse(localStorage.getItem('loggedIn'))
+//   const [currentUser, setCurrentUser] = useState({})
+//   const [loggedIn, setLoggedIn] = useState(JSON.parse(loggedInLocalStorage))
+
+//   const [moviesList, setMoviesList] = useState([])
+//   const [savedMoviesList, setSavedMoviesList] = useState([])
+
+//   const dataMovies = (movie) => {
+//     const {
+//       country,
+//       director,
+//       duration,
+//       year,
+//       description,
+//       image,
+//       trailerLink,
+//       nameRU,
+//       nameEN,
+//       id: movieId,
+//     } = movie
+
+//     return {
+//       country,
+//       director,
+//       duration,
+//       year,
+//       description,
+//       image: `${movieApiURL}${image.url}`,
+//       trailerLink,
+//       thumbnail: `${movieApiURL}${image.formats.thumbnail.url}`,
+//       nameRU,
+//       nameEN,
+//       movieId,
+//     }
+//   }
+
+//   const checkToken = (token) => {
+//     const path = location.pathname
+//     mainApi
+//       .tokenCheck(token)
+//       .then((res) => {
+//         if (!res.ok) {
+//           console.log('error')
+//         } else {
+//           setLoggedIn(true)
+//           localStorage.setItem('loggedIn', 'true')
+//         }
+//       })
+//       .catch((err) => {
+//         navigate(path, { replace: true })
+//         console.log(err)
+//       })
+//   }
+
+//   useEffect(() => {
+//     const token = localStorage.getItem('token')
+//     if (token) {
+//       checkToken(token)
+//     }
+//   }, [])
+
+//   useEffect(() => {
+//     if (loggedIn) {
+//       const token = localStorage.getItem('token')
+
+//       mainApi.setAuthorization(token)
+//       Promise.all([mainApi.getUserInfo(), mainApi.getMovies()])
+//         .then(([userData, savedMovies]) => {
+//           setCurrentUser(userData)
+//           setSavedMoviesList(savedMovies)
+//         })
+//         .catch((err) => {
+//           console.log(err)
+//         })
+//     }
+//   }, [loggedIn])
+
+//   const handleRegister = (name, email, password) => {
+//     return mainApi.register(name, email, password).then((res) => {
+//       if (!res.ok) {
+//         console.log('error')
+//       } else {
+//         return res.json().then((res) => {
+//           if (res._id) {
+//             handleLogin({ email, password })
+//           }
+//           navigate('/signin')
+//         })
+//       }
+//     })
+//   }
+
+//   const handleLogin = (email, password) => {
+//     return mainApi.authorize(email, password).then((res) => {
+//       if (!res.ok) {
+//         return console.log('error')
+//       } else {
+//         return res.json().then((res) => {
+//           setLoggedIn(true)
+//           localStorage.setItem('token', res.token)
+//           localStorage.setItem('loggedIn', 'true')
+//           navigate('/movies')
+//         })
+//       }
+//     })
+//   }
+
+//   const handleLogout = () => {
+//     setLoggedIn(false)
+//     setCurrentUser({})
+//     localStorage.removeItem('token')
+//     localStorage.clear()
+//     localStorage.setItem('loggedIn', 'false')
+//     navigate('/', { replace: true })
+//   }
+
+//   const getAllMovies = () => {
+//     return movieApi.getMovies().then((movies) => {
+//       const newMovies = movies.map((movie) => dataMovies(movie))
+//       setMoviesList(newMovies)
+//       return newMovies
+//     })
+//   }
+
+//   const savedMovie = (movie) => {
+//     return mainApi.createMovie(movie).then((movieData) => {
+//       setSavedMoviesList([...savedMoviesList, movieData])
+//     })
+//   }
+
+//   const deletedMovie = (movieId) => {
+//     const savedMovie = savedMoviesList.find((i) => i.movieId === movieId)
+//     return mainApi.deleteMovie(savedMovie._id).then((res) => {
+//       setSavedMoviesList(
+//         savedMoviesList.filter((movie) => movie._id !== savedMovie._id)
+//       )
+//       return res
+//     })
+//   }
+
+//   return (
+//     <>
+//       <CurrentUserContext.Provider
+//         value={{ loggedIn, setLoggedIn, currentUser, setCurrentUser }}
+//       >
+//         <MoviesContext.Provider
+//           value={{
+//             moviesList,
+//             setMoviesList,
+//             savedMovie,
+//             deletedMovie,
+//             savedMoviesList,
+//             setSavedMoviesList,
+//           }}
+//         >
+//           <Routes>
+//             <Route path="/" element={<Layout />}>
+//               <Route index element={<Main />} />
+//               <Route
+//                 path="movies"
+//                 element={
+//                   <ProtectedRoute loggedIn={loggedIn}>
+//                     <Movies getAllMovies={getAllMovies} />
+//                   </ProtectedRoute>
+//                 }
+//               />
+//             </Route>
+//           </Routes>
+//         </MoviesContext.Provider>
+//       </CurrentUserContext.Provider>
+//     </>
+//   )
+// }

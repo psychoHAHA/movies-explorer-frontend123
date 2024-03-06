@@ -2,12 +2,9 @@ import './SearchForm.css'
 
 import { useForm } from 'react-hook-form'
 
-import { validationOptions } from './../../constants/validationOptions'
-import MyInput from '../ui/MyInput/MyInput'
-import MyButton from '../ui/MyButton/MyButton'
+import InputSearch from '../InputSearch/InputSearch'
+import ButtonSearch from '../ButtonSearch/ButtonSearch'
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox'
-
-const { movieSearchValidOptions } = validationOptions
 
 export default function SearchForm({
   onSearchFormSubmit,
@@ -33,15 +30,14 @@ export default function SearchForm({
     <>
       <section className="search-form">
         <form className="search-form__form" onSubmit={handleSubmit(onSearchFormSubmit)}>
-          <MyInput
+          <InputSearch
             register={register}
-            registerOptions={movieSearchValidOptions}
             name="search"
             type="search"
             className="search-form__input"
             placeholder="Фильм"
           />
-          <MyButton />
+          <ButtonSearch />
         </form>
 
         <FilterCheckbox

@@ -1,7 +1,7 @@
 .button {
   height: 44px;
   width: 44px;
-  background-image: url(../../../images/btn.svg);
+  background-image: url(../../images/btn.svg);
   background-position: center;
   background-repeat: no-repeat;
   border: none;

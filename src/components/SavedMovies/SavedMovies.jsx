@@ -10,7 +10,6 @@ import {
   filterMoviesByName,
   filterShortMovies,
 } from './../../utils/filterMovies.js'
-import { movieSearchErrorMessages } from './../../constants/constants.js'
 
 export default function SavedMovies() {
   const { savedMoviesList } = useContext(MoviesContext) // List of saved movies

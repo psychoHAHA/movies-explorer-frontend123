@@ -1,4 +1,4 @@
-import './MyInput.css'
+import './InputSearch.css'
 
 export default function MyInput({
   register,
