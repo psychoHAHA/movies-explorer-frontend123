@@ -1,161 +1,244 @@
-import React, { useState, useEffect } from 'react'
-import { Route, Routes, Navigate, useNavigate } from 'react-router-dom'
-import { CurrentUserContext } from '../../contexts/CurrentUserContext'
-
-import * as mainApi from '../../utils/MainApi'
-// import moviesApi from '../../utils/MoviesApi'
-
-// import * as moviesApi from '../../utils/MoviesApi'
+import { useEffect, useState } from 'react'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 
 import './App.css'
 
 import Main from '../Main/Main'
-import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
-import Register from '../Register/Register'
-import Login from '../Login/Login'
-import Movies from '../Movies/Movies'
-import Profile from '../Profile/Profile'
-import SavedMovies from '../SavedMovies/SavedMovies'
-import ErrorNotFound from '../ErrorNotFound/ErrorNotFound'
+import Layout from '../Layout/Layout'
+import Movies from './../Movies/Movies'
+import SavedMovies from './../SavedMovies/SavedMovies'
+import Profile from './../Profile/Profile'
+import Login from './../Login/Login'
+import Register from './../Register/Register'
+import NotFound from './../ErrorNotFound/ErrorNotFound'
+// import InfoTooltip from './../InfoTooltip/InfoTooltip';
+import ProtectedRoute from './../ProtectedRoute/ProtectedRoute'
 
-export default function App() {
-  const [currentUser, setCurrentUser] = useState()
-  const loggedInFromStorage = JSON.parse(localStorage.getItem('loggedIn'))
-  const [loggedIn, setLoggedIn] = useState(JSON.parse(loggedInFromStorage))
-  const [isPreloading, setIsPreloading] = useState(false)
-  const [email, setEmail] = useState('')
-  const [setFormValue] = useState({
-    email: '',
-    password: '',
-  })
+import { CurrentUserContext } from './../../contexts/CurrentUserContext'
+import { IsLoadingContext } from './../../contexts/IsLoadingContext'
+import { MoviesContext } from '../../contexts/MoviesContext'
+import { InfoTooltipContext } from './../../contexts/InfoTooltipContext'
 
-  const [movies, setMovies] = useState([]) // с сервера
-  const [savedMovies, setSavedMovies] = useState([]) 
+import mainApi from './../../utils/MainApi'
+import movieApi from './../../utils/MoviesApi'
+import moviesDataAdapter from './../../utils/moviesDataAdapter.js'
+import { apiErrorMessages } from './../../constants/constants.js'
 
+function App() {
   const navigate = useNavigate()
 
-  const checkToken = () => {
-    const token = localStorage.getItem('jwt')
+  const loggedInFromStorage = JSON.parse(localStorage.getItem('loggedIn'))
 
-    if (token) {
-      mainApi.checkToken(token).then((res) => {
-        setLoggedIn(true)
-        localStorage.setItem('loggedIn', 'true')
-      }).catch((err) => console.log(err))
-    }
+  const [isApiError, setIsApiError] = useState(false)
+  const [loggedIn, setLoggedIn] = useState(JSON.parse(loggedInFromStorage))
+  const [moviesList, setMoviesList] = useState([])
+  const [savedMoviesList, setSavedMoviesList] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+
+  const [infoTooltipContent, setInfoTooltipContent] = useState({
+    isFail: true,
+    text: apiErrorMessages.defaultError,
+  })
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false)
+
+  const [currentUser, setCurrentUser] = useState({})
+
+  function authToken(token) {
+    const path = location.pathname
+    mainApi
+      .tokenCheck(token)
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((err) => {
+            return Promise.reject(`Ошибка: ${res.status} ${err.message}`)
+          })
+        } else {
+          setLoggedIn(true)
+          localStorage.setItem('loggedIn', 'true')
+        }
+      })
+      .catch((err) => {
+        setIsInfoTooltipOpen(true)
+        setInfoTooltipContent({ isFail: true, text: err })
+        console.log(err)
+        navigate(path, { replace: true })
+      })
   }
 
   useEffect(() => {
-    checkToken()
+    const token = localStorage.getItem('token')
+    if (token) {
+      authToken(token)
+    }
   }, [])
 
-  const handleRegister = (name, email, password) => {
-    setIsPreloading(true)
-    mainApi
-      .register(name, email, password)
-      .then(() => {
-        navigate('/signin', { replace: true })
-      })
+  useEffect(() => {
+    if (loggedIn) {
+      const token = localStorage.getItem('token')
 
-      .catch((err) => {
-        console.log(err)
-      })
-      .finally(() => {
-        setIsPreloading(false)
-      })
+      mainApi.setAuthorizationHeader(token)
+      Promise.all([mainApi.getUserInfo(), mainApi.getMovies()])
+        .then(([userData, savedMovies]) => {
+          setCurrentUser(userData)
+          setSavedMoviesList(savedMovies)
+        })
+        .catch((err) => {
+          setIsInfoTooltipOpen(true)
+          setInfoTooltipContent({ isFail: true, text: err })
+        })
+    }
+  }, [loggedIn])
+
+  function handleLogin(email, password) {
+    return mainApi.authorize(email, password).then((res) => {
+      if (!res.ok) {
+        return Promise.reject(res)
+      } else {
+        return res.json().then((res) => {
+          setLoggedIn(true)
+          localStorage.setItem('token', res.token)
+          localStorage.setItem('loggedIn', 'true')
+          navigate('/movies')
+        })
+      }
+    })
   }
 
-  const handleLogin = (email, password) => {
-    setIsPreloading(true)
-    mainApi
-      .authorize(email, password)
-      .then((res) => {
-        setLoggedIn(true)
-        localStorage.setItem('jwt', res.jwt)
-        localStorage.setItem('loggedIn', 'true')
-        navigate('/movies', { replace: true })
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-      .finally(() => {
-        setIsPreloading(false)
-      })
+  function handleRegister(name, email, password) {
+    return mainApi.register(name, email, password).then((res) => {
+      if (!res.ok) {
+        return Promise.reject(res)
+      } else {
+        return res.json().then((res) => {
+          if (res._id) {
+            handleLogin({ email, password })
+          }
+          navigate('/signin')
+        })
+      }
+    })
   }
 
-  const logout = () => {
+  function fetchAllMovies() {
+    setIsLoading(true)
+
+    return movieApi.getMovies().then((movies) => {
+      const adaptedMovies = movies.map((movie) => moviesDataAdapter(movie))
+      setMoviesList(adaptedMovies)
+      setIsApiError(false)
+      return adaptedMovies
+    })
+  }
+
+  function saveMovie(movie) {
+    return mainApi.createMovie(movie).then((movieData) => {
+      setSavedMoviesList([...savedMoviesList, movieData])
+    })
+  }
+
+  function deleteMovie(movieId) {
+    const savedMovie = savedMoviesList.find((item) => item.movieId === movieId)
+    return mainApi.deleteMovie(savedMovie._id).then((res) => {
+      setSavedMoviesList(
+        savedMoviesList.filter((movie) => movie._id !== savedMovie._id)
+      )
+      return res
+    })
+  }
+
+  function handleLogout() {
     setLoggedIn(false)
     setCurrentUser({})
+    localStorage.removeItem('token')
     localStorage.clear()
     localStorage.setItem('loggedIn', 'false')
     navigate('/', { replace: true })
   }
 
-  // function fetchAllMovies() {
-
-  //   return moviesApi.getMovies().then((movies) => {
-  //     const adaptedMovies = movies.map((movie) =>
-  //     moviesApi.moviesDataAdapter(movie));
-  //     setMovies(adaptedMovies);
-  //     return adaptedMovies;
-  //   });
-  // }
-
   return (
-    <CurrentUserContext.Provider value={{ currentUser, setCurrentUser, loggedIn, setLoggedIn }}>
-      <div className="App">
-        <Routes>
-          <Route exact path="/" element={<Main />}></Route>
+    <>
+      <CurrentUserContext.Provider
+        value={{ currentUser, setCurrentUser, loggedIn, setLoggedIn }}
+      >
+        <IsLoadingContext.Provider value={{ isLoading, setIsLoading }}>
+          <InfoTooltipContext.Provider
+            value={{
+              infoTooltipContent,
+              setInfoTooltipContent,
+              isInfoTooltipOpen,
+              setIsInfoTooltipOpen,
+            }}
+          >
+            <MoviesContext.Provider
+              value={{
+                moviesList,
+                setMoviesList,
+                savedMoviesList,
+                setSavedMoviesList,
+                saveMovie,
+                deleteMovie,
+              }}
+            >
+              <Routes>
+                <Route path="/" element={<Layout />}>
+                  <Route index element={<Main />} />
 
-          <Route
-            path="/signup"
-            element={
-              <Register
-                onRegister={handleRegister}
-                loggedIn={loggedIn}
-                isPreloading={isPreloading}
-              />
-            }
-          ></Route>
-          <Route
-            path="/signin"
-            element={
-              <Login
-                onLogin={handleLogin}
-                setEmail={setEmail}
-                loggedIn={loggedIn}
-                isPreloading={isPreloading}
-              />
-            }
-          ></Route>
-          {/* <Route
-            exact
-            path="/profile"
-            element={
-              <ProtectedRoute element={<Profile />} loggedIn={loggedIn} />
-            }
-          ></Route> */}
-          <Route exact path='/profile' element={<Profile onLogout={logout} />} />
-          {/* <Route
-            exact
-            path="/movies"
-            element={
-              <ProtectedRoute loggedIn={loggedIn} element={<Movies />} />
-            }
-          /> */}
+                  <Route
+                    path="movies"
+                    element={
+                      <ProtectedRoute loggedIn={loggedIn}>
+                        <Movies
+                          fetchAllMovies={fetchAllMovies}
+                          isApiError={isApiError}
+                          setIsApiError={setIsApiError}
+                        />
+                      </ProtectedRoute>
+                    }
+                  />
 
-          <Route exact path='/movies' element={<Movies fetchAllMovies={fetchAllMovies} />}/>
-          <Route exact path='/saved-movies' element={<Movies />} /> 
-          {/* <Route
-            exact
-            path="/saved-movies"
-            element={
-              <ProtectedRoute element={<SavedMovies />} loggedIn={loggedIn} />
-            }
-          /> */}
-          <Route exact path="/404" element={<ErrorNotFound />} />
-        </Routes>
-      </div>
-    </CurrentUserContext.Provider>
+                  <Route
+                    path="saved-movies"
+                    element={
+                      <ProtectedRoute loggedIn={loggedIn}>
+                        <SavedMovies />
+                      </ProtectedRoute>
+                    }
+                  />
+                </Route>
+
+                <Route
+                  path="profile"
+                  element={
+                    <ProtectedRoute loggedIn={loggedIn}>
+                      <Profile
+                        onLogout={handleLogout}
+                        isApiError={isApiError}
+                        setIsApiError={setIsApiError}
+                      />
+                    </ProtectedRoute>
+                  }
+                />
+
+                <Route path="*" element={<NotFound />} />
+
+                <Route
+                  path="signin"
+                  element={<Login onLogin={handleLogin} loggedIn={loggedIn} />}
+                />
+
+                <Route
+                  path="signup"
+                  element={
+                    <Register onRegister={handleRegister} loggedIn={loggedIn} />
+                  }
+                />
+              </Routes>
+            </MoviesContext.Provider>
+          </InfoTooltipContext.Provider>
+        </IsLoadingContext.Provider>
+      </CurrentUserContext.Provider>
+    </>
   )
 }
+
+export default App

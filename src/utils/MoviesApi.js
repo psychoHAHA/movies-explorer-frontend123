@@ -47,62 +47,33 @@
 //   };
 // };
 
-class MoviesApi {
-  constructor({ url, headers }) {
-    this._url = url;
+import { CONFIG } from './../constants/config.js';
+
+class MovieApi {
+  constructor({ baseUrl, headers }) {
+    this._baseUrl = baseUrl;
     this._headers = headers;
   }
 
-  _getResponse(response) {
-    if (response.ok) {
-      return response.json();
+  _getResponse(res) {
+    if (res.ok) {
+      return res.json();
+    } else {
+      return res.json().then((err) => {
+        return Promise.reject(`Ошибка: ${res.status} ${err.message}`);
+      });
     }
-
-    return Promise.reject(new Error("Возникла ошибка"));
   }
 
+  // Get movies
   getMovies() {
-    return fetch(`${this._url}`, {
-      method: "GET",
+    return fetch(`${this._baseUrl}`, {
+      method: 'GET',
       headers: this._headers,
     }).then(this._getResponse);
   }
-
-  moviesDataAdapter() {
-    const {
-      country,
-      director,
-      duration,
-      year,
-      description,
-      image,
-      trailerLink,
-      nameRU,
-      nameEN,
-      id: movieId,
-    } = movie;
-
-    return {
-      country,
-      director,
-      duration,
-      year,
-      description,
-      image: `${this._url}${image.url}`,
-      trailerLink,
-      // thumbnail: `${this._url}${image.formats.thumbnail.url}`,
-      nameRU,
-      nameEN,
-      movieId,
-    };
-  }
 }
 
-const moviesApi = new MoviesApi({
-  url: "https://api.nomoreparties.co/beatfilm-movies",
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
+const movieApi = new MovieApi(CONFIG.movieApiConfig);
 
-export default moviesApi;
+export default movieApi;

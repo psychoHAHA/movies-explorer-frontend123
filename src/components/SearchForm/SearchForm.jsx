@@ -1,30 +1,54 @@
-import "./SearchForm.css"
+import './SearchForm.css'
 
-export default function SearchForm() {
+import { useForm } from 'react-hook-form'
+
+import { validationOptions } from './../../constants/validationOptions'
+import MyInput from '../ui/MyInput/MyInput'
+import MyButton from '../ui/MyButton/MyButton'
+import FilterCheckbox from '../FilterCheckbox/FilterCheckbox'
+
+const { movieSearchValidOptions } = validationOptions
+
+export default function SearchForm({
+  onSearchFormSubmit,
+  onIsShortChangeHandler,
+  moviesFilter,
+}) {
+
+  const methods = useForm({
+    defaultValues: {
+      search: moviesFilter.query,
+      isShort: moviesFilter.isShort,
+    },
+    value: { search: moviesFilter.query, isShort: moviesFilter.isShort },
+    mode: 'onSubmit',
+  })
+
+  const {
+    handleSubmit,
+    register,
+  } = methods
+
   return (
     <>
       <section className="search-form">
-        <form className="search-form__form">
-          <input
-            className="search-form__input"
+        <form className="search-form__form" onSubmit={handleSubmit(onSearchFormSubmit)}>
+          <MyInput
+            register={register}
+            registerOptions={movieSearchValidOptions}
+            name="search"
             type="search"
-            placeholder="Фильмы"
-            required
+            className="search-form__input"
+            placeholder="Фильм"
           />
-          <button className="search-form__button" type="submit"></button>
+          <MyButton />
         </form>
 
-        <div className="search-form__container">
-          <label className="search-form__checkboxs" htmlFor="checkbox">
-            <input
-              type="checkbox"
-              id="checkbox"
-              className="search-form__checkbox"
-            />
-            <span className="auth__input-error"></span>
-            <span className="search-form__span">Короткометражки</span>
-          </label>
-        </div>
+        <FilterCheckbox
+          name={'isShort'}
+          register={register}
+          onCheckboxChange={onIsShortChangeHandler}
+        />
       </section>
     </>
   )

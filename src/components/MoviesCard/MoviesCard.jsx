@@ -1,33 +1,113 @@
-import "./MoviesCard.css"
-import movie1 from "../../images/movie1.png"
-import movie2 from "../../images/movie2.png"
-import movie3 from "../../images/movie3.png"
+import './MoviesCard.css'
 
-export default function MoviesCard() {
-  
+import { useState, useContext, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
+
+import { MoviesContext } from './../../contexts/MoviesContext'
+
+import { timeConvertor } from './../../utils/timeConvertor.js'
+
+export default function MoviesCard({ movie }) {
+  const { savedMoviesList, saveMovie, deleteMovie } = useContext(MoviesContext)
+
+  const { duration, image: imageURL, nameRU, movieId, trailerLink } = movie
+
+  useEffect(() => {
+    const isSaved = savedMoviesList.some(
+      (savedMovie) => savedMovie.movieId === movie.movieId
+    )
+    setIsMovieSaved(isSaved)
+  }, [savedMoviesList, movie])
+
+  const [isMovieSaved, setIsMovieSaved] = useState(false)
+
+  const location = useLocation()
+
+  const saveMovieHandler = () => {
+    if (!isMovieSaved) {
+      saveMovie(movie)
+        .then(() => setIsMovieSaved(true))
+        .catch((err) => {
+          console.error(err)
+          console.log(movie);
+        })
+    } else {
+      deleteMovie(movieId)
+        .then((res) => {
+          setIsMovieSaved(false)
+          console.log(res.message)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+  }
+
+  const deleteMovieHandler = () => {
+    deleteMovie(movieId)
+      .then((res) => {
+        console.log(res.message)
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  }
+
   return (
-    <>
-      <li className="movies-card">
-        <a
-          href="#"
-          className="movies-cardBD__link"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <img src={movie1} alt="обложка кина" className="movies-card__image" />
-        </a>
-        <button className="movies-card__button">Сохранить</button>
-        <div className="movies-card__container">
-          <h1 className="movies-card__title">Киноальманах «100 лет дизайна»</h1>
-          <p className="movies-card__time">1ч 17м</p>
-        </div>
-      </li>
+    <li className="movies-card">
+      <a
+        href={trailerLink}
+        className="movies-card__link"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`Трейлер к фильму ${nameRU}`}
+      >
+        <img src={imageURL} alt="обложка кина" className="movies-card__image" />
+      </a>
+      <div className="movies-card__container">
+        <h1 className="movies-card__title">{nameRU}</h1>
+        <p className="movies-card__time">{timeConvertor(duration)}</p>
+      </div>
 
-      <li className="movies-card">
+      {location.pathname === '/movies' && (
+        <button className={`movies-card__button ${isMovieSaved ? 'movies-card__button-selected' : ''}`} onClick={saveMovieHandler}>Сохранить</button>
+      )}
+
+      {location.pathname === '/saved-movies' && (
+        <button className="movies-card__button movies-card__button-cross" onClick={deleteMovieHandler}>
+          Удалить
+        </button>
+      )}
+
+      {/* {location.pathname === 'saved-movies' ? (
+        <button
+          className="movies-card__button movies-card__button-cross"
+          onClick={deleteMovieHandler}
+        >
+          Удалить
+        </button>
+      ) : (
+        <button
+          className={`movies-card__button ${
+            isMovieSaved ? 'movies-card__button-selected' : ' '
+          }`}
+          onClick={saveMovieHandler}
+        >
+          Сохранить
+        </button>
+      )} */}
+    </li>
+  )
+}
+
+{
+  /* <li className="movies-card">
         <a href="#" className="movies-card__link">
           <img src={movie2} alt="обложка кина" className="movies-card__image" />
         </a>
-        <button className="movies-card__button movies-card__button-selected">Сохранить</button>
+        <button className="movies-card__button movies-card__button-selected">
+          Сохранить
+        </button>
         <div className="movies-card__container">
           <h1 className="movies-card__title">В погоне за Бенкси</h1>
           <p className="movies-card__time">1ч 17м</p>
@@ -38,13 +118,12 @@ export default function MoviesCard() {
         <a href="#" className="movies-card__link">
           <img src={movie3} alt="обложка кина" className="movies-card__image" />
         </a>
-        <button className='movies-card__button movies-card__button-cross'
-        >Сохранить</button>
+        <button className="movies-card__button movies-card__button-cross">
+          Сохранить
+        </button>
         <div className="movies-card__container">
           <h1 className="movies-card__title">33 слова о дизайне</h1>
           <p className="movies-card__time">1ч 17м</p>
         </div>
-      </li>
-    </>
-  )
+      </li> */
 }

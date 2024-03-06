@@ -29,6 +29,7 @@
   width: 72px;
   height: 21px;
   transition: all .2s ease;
+  cursor: pointer;
 }
 
 .movies-card__button:hover {
