@@ -12,15 +12,8 @@ import { useViewport } from './../../hooks/useViewport'
 import { useCountToShow } from './../../hooks/useCountToShow'
 
 import {
-  setStoreMovieSearchQuery,
-  setStoreSearchedMovies,
-  getStoreMovieSearchQuery,
-  getStoreSearchedMovies,
-} from './../../utils/storeMovieSearchData'
-
-import {
-  filterMoviesByName,
-  filterShortMovies,
+  filterMoviesName,
+  filterMovies,
 } from './../../utils/filterMovies.js'
 
 import { CONFIG } from './../../constants/config.js'
@@ -40,6 +33,36 @@ export default function Movies({ getAllMovies }) {
     stepsToShow
   )
 
+  const getPathName = () => {
+    return document.location.pathname.split("/")[1];
+  };
+  
+  const setMovieSearch = (searchQuery) => {
+    const path = getPathName();
+  
+    localStorage.setItem(`search-query_${path}`, JSON.stringify(searchQuery));
+  };
+  
+  const setSearchedMoviesData = (movies) => {
+    const path = getPathName();
+  
+    if (movies) {
+      localStorage.setItem(`searched_${path}`, JSON.stringify(movies));
+    }
+  };
+  
+  const getMoviesSearchQuery = () => {
+    const path = getPathName();
+  
+    return JSON.parse(localStorage.getItem(`search-query_${path}`));
+  };
+  
+  const getSearchedMoviesData = () => {
+    const path = getPathName();
+  
+    return JSON.parse(localStorage.getItem(`searched_${path}`));
+  };
+
   const [isCompleted, setIsCompleted] = useState(true)
 
   const [moviesToShow, setMoviesToShow] = useState([])
@@ -47,14 +70,14 @@ export default function Movies({ getAllMovies }) {
   const [moviesToRender, setMoviesToRender] = useState([])
 
   const [moviesFilter, setMoviesFilter] = useState(
-    getStoreMovieSearchQuery() || { query: '', isShort: false }
+    getMoviesSearchQuery() || { query: '', isShort: false }
   )
 
   const [index, setIndex] = useState(initialCount)
 
   useEffect(() => {
-    const searchedMoviesFormStore = getStoreSearchedMovies()
-    const searchQueryFormStore = getStoreMovieSearchQuery()
+    const searchedMoviesFormStore = getSearchedMoviesData()
+    const searchQueryFormStore = getMoviesSearchQuery()
     if (
       searchedMoviesFormStore &&
       searchedMoviesFormStore.length !== 0 &&
@@ -66,7 +89,7 @@ export default function Movies({ getAllMovies }) {
 
   useEffect(() => {
     if (searchedMovies.length !== 0) {
-      setStoreSearchedMovies(searchedMovies)
+      setSearchedMoviesData(searchedMovies)
     }
   }, [searchedMovies])
 
@@ -100,7 +123,7 @@ export default function Movies({ getAllMovies }) {
     if (moviesList.length === 0) {
       getAllMovies()
         .then((adaptedMovies) => {
-          setStoreMovieSearchQuery(newMoviesFilter)
+          setMovieSearch(newMoviesFilter)
           setMoviesFilter(newMoviesFilter)
 
           handleFilterMovies(adaptedMovies, newMoviesFilter)
@@ -109,7 +132,7 @@ export default function Movies({ getAllMovies }) {
           console.error(err)
         })
     } else {
-      setStoreMovieSearchQuery(newMoviesFilter)
+      setMovieSearch(newMoviesFilter)
       setMoviesFilter(newMoviesFilter)
 
       handleFilterMovies(moviesList, newMoviesFilter)
@@ -119,9 +142,9 @@ export default function Movies({ getAllMovies }) {
   const handleShortChange = (e) => {
     const newMoviesFilter = { ...moviesFilter, isShort: e.target.checked }
     setMoviesFilter(newMoviesFilter)
-    setStoreMovieSearchQuery(newMoviesFilter)
+    setMovieSearch(newMoviesFilter)
 
-    const filteredMoviesByNameAndShort = filterShortMovies(
+    const filteredMoviesByNameAndShort = filterMovies(
       searchedMovies,
       newMoviesFilter.isShort
     )
@@ -129,12 +152,12 @@ export default function Movies({ getAllMovies }) {
   }
 
   const handleFilterMovies = (movies, filterQuery) => {
-    const filteredMoviesByName = filterMoviesByName(movies, filterQuery.query)
+    const filteredMoviesByName = filterMoviesName(movies, filterQuery.query)
     setSearchedMovies(filteredMoviesByName)
     if (!filterQuery.isShort) {
       setMoviesToRender(filteredMoviesByName)
     } else {
-      const filteredMoviesByNameAndShort = filterShortMovies(
+      const filteredMoviesByNameAndShort = filterMovies(
         filteredMoviesByName,
         filterQuery.isShort
       )
@@ -170,10 +193,10 @@ export default function Movies({ getAllMovies }) {
 // import SearchForm from '../SearchForm/SearchForm'
 
 // import {
-//   setStoreMovieSearchQuery,
+//   setMovieSearch,
 //   setStoreSearchedMovies,
 //   getStoreMovieSearchQuery,
-//   getStoreSearchedMovies,
+//   getSearchedMoviesData,
 // } from './../../utils/storeMovieSearchData'
 
 // import { useViewport } from '../../hooks/useViewport'
@@ -201,12 +224,12 @@ export default function Movies({ getAllMovies }) {
 //   )
 
 //   const handleFilterMovies = (movies, filterQuery) => {
-//     const filteredMoviesByName = filterMoviesByName(movies, filterQuery.query)
+//     const filteredMoviesByName = filterMoviesName(movies, filterQuery.query)
 //     setSearchedMovies(filteredMoviesByName)
 //     if (!filterQuery.isShort) {
 //       setMoviesToRender(filteredMoviesByName)
 //     } else {
-//       const filteredMoviesByNameAndShort = filterShortMovies(
+//       const filteredMoviesByNameAndShort = filterMovies(
 //         filteredMoviesByName,
 //         filterQuery.isShort
 //       )
@@ -215,7 +238,7 @@ export default function Movies({ getAllMovies }) {
 //   }
 
 //   useEffect(() => {
-//     const searchedMoviesFormStore = getStoreSearchedMovies()
+//     const searchedMoviesFormStore = getSearchedMoviesData()
 //     const searchQueryFormStore = getStoreMovieSearchQuery()
 //     if (
 //       searchedMoviesFormStore &&

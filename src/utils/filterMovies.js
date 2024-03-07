@@ -1,6 +1,6 @@
 import { CONFIG } from "./../constants/config.js";
 
-export const filterShortMovies = (movies, isShort) => {
+export const filterMovies = (movies, isShort) => {
   if (isShort) {
     return [...movies].filter(
       (movie) => movie.duration <= CONFIG.shortMovieDuration
@@ -10,7 +10,7 @@ export const filterShortMovies = (movies, isShort) => {
   }
 };
 
-export const filterMoviesByName = (movies, query) => {
+export const filterMoviesName = (movies, query) => {
   return movies.filter(
     (movie) =>
       movie.nameRU.toLowerCase().includes(query.toLowerCase().trim()) ||

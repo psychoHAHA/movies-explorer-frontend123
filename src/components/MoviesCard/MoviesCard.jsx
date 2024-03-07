@@ -5,8 +5,6 @@ import { useLocation } from 'react-router-dom'
 
 import { MoviesContext } from './../../contexts/MoviesContext'
 
-import { timeConvertor } from './../../utils/timeConvertor.js'
-
 export default function MoviesCard({ movie }) {
   const { savedMoviesList, saveMovie, deleteMovie } = useContext(MoviesContext)
 
@@ -22,6 +20,10 @@ export default function MoviesCard({ movie }) {
   const [isMovieSaved, setIsMovieSaved] = useState(false)
 
   const location = useLocation()
+
+  const timeConvertor = (m) => {
+    return `${Math.floor(m / 60)}ч ${m % 60}м`;
+  };
 
   const saveMovieHandler = () => {
     if (!isMovieSaved) {

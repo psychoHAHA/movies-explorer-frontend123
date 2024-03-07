@@ -7,31 +7,32 @@ import { useState, useContext, useEffect } from 'react'
 import { MoviesContext } from '../../contexts/MoviesContext'
 
 import {
-  filterMoviesByName,
-  filterShortMovies,
+  filterMoviesName,
+  filterMovies,
 } from './../../utils/filterMovies.js'
 
 export default function SavedMovies() {
-  const { savedMoviesList } = useContext(MoviesContext) // List of saved movies
+  const { savedMoviesList } = useContext(MoviesContext)
 
   const [moviesFilter, setMoviesFilter] = useState({
     query: '',
     isShort: false,
-  }) // Search form data
-  const [searchedMovies, setSearchedMovies] = useState([]) // List of movies filtered by name
-  const [moviesToRender, setMoviesToRender] = useState([]) // List of movies filtered by name and shortness
+  })
+
+  const [searchedMovies, setSearchedMovies] = useState([])
+  const [moviesToRender, setMoviesToRender] = useState([])
 
   useEffect(() => {
     filterMoviesHandler(savedMoviesList, moviesFilter)
   }, [moviesFilter, savedMoviesList])
 
   const filterMoviesHandler = (movies, filterQuery) => {
-    const filteredMoviesByName = filterMoviesByName(movies, filterQuery.query)
+    const filteredMoviesByName = filterMoviesName(movies, filterQuery.query)
     setSearchedMovies(filteredMoviesByName)
     if (!filterQuery.isShort) {
       setMoviesToRender(filteredMoviesByName)
     } else {
-      const filteredMoviesByNameAndShort = filterShortMovies(
+      const filteredMoviesByNameAndShort = filterMovies(
         filteredMoviesByName,
         filterQuery.isShort
       )
@@ -49,7 +50,7 @@ export default function SavedMovies() {
     const newMoviesFilter = { ...moviesFilter, isShort: e.target.checked }
     setMoviesFilter(newMoviesFilter)
 
-    const filteredMoviesByNameAndShort = filterShortMovies(
+    const filteredMoviesByNameAndShort = filterMovies(
       searchedMovies,
       newMoviesFilter.isShort
     )
