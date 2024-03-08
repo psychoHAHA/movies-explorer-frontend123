@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 import React from "react"
-=======
->>>>>>> main
 import "./NavTab.css"
 
 export default function NavTab() {

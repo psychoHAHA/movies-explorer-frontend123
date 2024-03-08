@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import './SavedMovies.css'
 import SearchForm from '../SearchForm/SearchForm'
 import MoviesCardList from '../MoviesCardList/MoviesCardList'
@@ -7,10 +6,7 @@ import React, { useState, useContext, useEffect } from 'react'
 
 import { MoviesContext } from '../../contexts/MoviesContext'
 
-import {
-  filterMoviesName,
-  filterMovies,
-} from './../../utils/filterMovies.js'
+import { filterMoviesName, filterMovies } from './../../utils/filterMovies.js'
 
 export default function SavedMovies() {
   const { savedMoviesList } = useContext(MoviesContext)
@@ -67,34 +63,15 @@ export default function SavedMovies() {
           moviesFilter={moviesFilter}
         />
         {savedMoviesList.length !== 0 && (
-          <div className='saved-movies'>
+          <div className="saved-movies">
             {moviesToRender.length !== 0 ? (
-          <MoviesCardList moviesToShow={moviesToRender} />
-        ) : (
-          (savedMoviesList.length !== 0 && (
-            console.log(123)
-          ))
-        )}
+              <MoviesCardList moviesToShow={moviesToRender} />
+            ) : (
+              savedMoviesList.length !== 0 && console.log(123)
+            )}
           </div>
         )}
       </main>
-=======
-import "./SavedMovies.css"
-import Header from "../Header/Header"
-import SearchForm from "../SearchForm/SearchForm"
-import MoviesCardList from "../MoviesCardList/MoviesCardList"
-import Footer from "../Footer/Footer"
-
-export default function SavedMovies() {
-  return (
-    <>
-      <div className="saved-movie">
-        <Header />
-        <SearchForm />
-        <MoviesCardList />
-        <Footer />
-      </div>
->>>>>>> main
     </>
   )
 }

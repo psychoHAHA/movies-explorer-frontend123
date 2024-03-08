@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import MoviesCard from '../MoviesCard/MoviesCard'
 import './MoviesCardList.css'
 import React from 'react';
@@ -12,17 +11,3 @@ export default function MoviesCardList({ moviesToShow }) {
     </ul>
   )
 }
-=======
-import MoviesCard from "../MoviesCard/MoviesCard"
-import "./MoviesCardList.css"
-
-export default function MoviesCardList() {
-  return (
-    <>
-      <ul className="movies-cards-list">
-        <MoviesCard />
-      </ul>
-    </>
-  )
-}
->>>>>>> main

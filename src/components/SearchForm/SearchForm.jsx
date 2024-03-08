@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import './SearchForm.css'
 
 import React from 'react'
@@ -14,7 +13,6 @@ export default function SearchForm({
   onHandleShortChange,
   moviesFilter,
 }) {
-
   const methods = useForm({
     defaultValues: {
       search: moviesFilter.query,
@@ -24,15 +22,15 @@ export default function SearchForm({
     mode: 'onSubmit',
   })
 
-  const {
-    handleSubmit,
-    register,
-  } = methods
+  const { handleSubmit, register } = methods
 
   return (
     <>
       <section className="search-form">
-        <form className="search-form__form" onSubmit={handleSubmit(onSearchFormSubmit)}>
+        <form
+          className="search-form__form"
+          onSubmit={handleSubmit(onSearchFormSubmit)}
+        >
           <InputSearch
             register={register}
             name="search"
@@ -41,42 +39,13 @@ export default function SearchForm({
             placeholder="Фильм"
           />
           <ButtonSearch />
-        </form>
 
-        <FilterCheckbox
-          name={'isShort'}
-          register={register}
-          onCheckboxChange={onHandleShortChange}
-        />
-=======
-import "./SearchForm.css"
-
-export default function SearchForm() {
-  return (
-    <>
-      <section className="search-form">
-        <form className="search-form__form">
-          <input
-            className="search-form__input"
-            type="search"
-            placeholder="Фильмы"
-            required
+          <FilterCheckbox
+            name={'isShort'}
+            register={register}
+            onCheckboxChange={onHandleShortChange}
           />
-          <button className="search-form__button" type="submit"></button>
         </form>
-
-        <div className="search-form__container">
-          <label className="search-form__checkboxs" htmlFor="checkbox">
-            <input
-              type="checkbox"
-              id="checkbox"
-              className="search-form__checkbox"
-            />
-            <span className="auth__input-error"></span>
-            <span className="search-form__span">Короткометражки</span>
-          </label>
-        </div>
->>>>>>> main
       </section>
     </>
   )

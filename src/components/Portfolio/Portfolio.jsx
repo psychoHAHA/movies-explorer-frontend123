@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 import React from "react"
-=======
->>>>>>> main
 import "./Portfolio.css"
 import linkImage from "../../images/linkImage.svg"
 

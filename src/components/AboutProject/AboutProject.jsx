@@ -1,7 +1,5 @@
-<<<<<<< HEAD
 import React from "react"
-=======
->>>>>>> main
+
 import "./AboutProject.css"
 
 export default function AboutProject() {
