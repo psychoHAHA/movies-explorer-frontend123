@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 import React from "react"
+=======
+>>>>>>> main
 import "./Footer.css"
 
 export default function Footer() {

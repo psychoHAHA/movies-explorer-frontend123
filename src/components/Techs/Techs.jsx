@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 import React from "react"
+=======
+>>>>>>> main
 import "./Techs.css"
 
 export default function Techs() {

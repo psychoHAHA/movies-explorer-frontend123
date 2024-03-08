@@ -10,12 +10,20 @@ import Footer from "../Footer/Footer"
 export default function Main() {
   return (
     <>
+<<<<<<< HEAD
+=======
+    <Header />
+>>>>>>> main
       <main className="page">
         <Promo />
         <AboutProject />
         <Techs />
         <AboutMe />
         <Portfolio />
+<<<<<<< HEAD
+=======
+        <Footer />
+>>>>>>> main
       </main>
     </>
   )

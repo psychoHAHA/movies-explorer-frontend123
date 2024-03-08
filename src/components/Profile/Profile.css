@@ -79,7 +79,10 @@
 .profile__button-logout {
   font-weight: 500;
   color: #EE3465;
+<<<<<<< HEAD
   cursor: pointer;
+=======
+>>>>>>> main
   transition: all .2s ease;
 }
 
