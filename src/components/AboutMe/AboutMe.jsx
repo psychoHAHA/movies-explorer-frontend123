@@ -1,5 +1,11 @@
+<<<<<<< HEAD
+import React from "react"
+import "./AboutMe.css"
+import photo from "../../images/me.png"
+=======
 import "./AboutMe.css"
 import photo from "../../images/me.jpg"
+>>>>>>> main
 
 export default function AboutMe() {
   return (
@@ -7,7 +13,11 @@ export default function AboutMe() {
       <div className="about-me" id="AboutMe">
         <h2 className="about-me__title">Студент</h2>
         <div className="about-me__information">
+<<<<<<< HEAD
+          <img src='/src/images/me.png' alt="я" className="about-me__photo" />
+=======
           <img src={photo} alt="я" className="about-me__photo" />
+>>>>>>> main
           <div className="about-me__text">
             <h3 className="about-me__name">Кирилл</h3>
             <p className="about-me__profession">Фронтенд-разработчик, 19 лет</p>

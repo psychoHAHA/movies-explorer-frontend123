@@ -12,7 +12,11 @@
   align-items: center;
   text-align: center;
   transition: all 0.3s ease-in-out;
+<<<<<<< HEAD
+  transform: translateY(-100%);
+=======
   transform: translateX(100%);
+>>>>>>> main
   visibility: hidden;
   z-index: 2;
 }
