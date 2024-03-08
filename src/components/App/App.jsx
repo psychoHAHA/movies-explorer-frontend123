@@ -99,7 +99,7 @@ function App() {
           setLoggedIn(true)
           localStorage.setItem('token', res.token)
           localStorage.setItem('loggedIn', 'true')
-          navigate('/profile')
+          navigate('/movies')
         })
       }
     })

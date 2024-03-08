@@ -51,7 +51,6 @@ class MainApi {
       method: 'POST',
       headers: this._headers,
       body: JSON.stringify({ name, email, password }),
-      mode: 'no-cors'
     })
   }
 
