@@ -4,4 +4,10 @@
 
 ## Ссылки
 
-### Frontend: (https://github.com/psychoHAHA/movies-explorer-frontend)
+### Git: (https://github.com/psychoHAHA/movies-explorer-frontend)
+
+### Pull request: 
+
+### Frontend: [text](https://psychodelic.movie.nomoredomainswork.ru/)
+
+### Backend: [link]https://api.psychodelic.movie.nomoredomainsmonster.ru/

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Routes, Route, useNavigate } from 'react-router-dom'
 
 import './App.css'
@@ -29,7 +29,6 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(JSON.parse(loggedInFromStorage))
   const [moviesList, setMoviesList] = useState([])
   const [savedMoviesList, setSavedMoviesList] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
 
   const [currentUser, setCurrentUser] = useState({})
 
@@ -100,7 +99,7 @@ function App() {
           setLoggedIn(true)
           localStorage.setItem('token', res.token)
           localStorage.setItem('loggedIn', 'true')
-          navigate('/movies')
+          navigate('/profile')
         })
       }
     })

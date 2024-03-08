@@ -1,6 +1,20 @@
 import { mainApiURL, movieApiURL } from './constants.js';
 
 const CONFIG = {
+  mainApiConfig: {
+    baseUrl: mainApiURL,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  },
+
+  
+  movieApiConfig: {
+    baseUrl: `${movieApiURL}/beatfilm-movies`,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+
   shortMovieDuration: 40,
   screenBreakPoints: {
     mobileWidth: 320,
@@ -17,17 +31,6 @@ const CONFIG = {
     tabletStep: 2,
     desktopStep: 3,
   },
-  mainApiConfig: {
-    baseUrl: mainApiURL,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  },
-  movieApiConfig: {
-    baseUrl: `${movieApiURL}/beatfilm-movies`,
-    headers: {
-      'Content-Type': 'application/json',
-    },
   },
 };
 

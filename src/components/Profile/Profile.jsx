@@ -1,80 +1,17 @@
 import './Profile.css'
 import Header from '../Header/Header'
 
-import { useContext, useEffect, useState } from 'react'
-// import { useForm } from 'react-hook-form'
+import React, { useContext, useEffect, useState } from 'react'
 
 import { CurrentUserContext } from './../../contexts/CurrentUserContext'
 
-// import { validationOptions } from '../../constants/validationOptions.js'
-// import { apiErrorMessages } from './../../constants/constants.js'
 import mainApi from '../../utils/MainApi.js'
-
-// const { nameValidOptions, emailValidOptions } = validationOptions
 
 export default function Profile({
   onLogout,
-  // onEditUserInfo,
-  // isApiError,
-  // setIsApiError,
 }) {
   const { currentUser } = useContext(CurrentUserContext)
-
-  // const methods = useForm({
-  //   values: { name: currentUser.name, email: currentUser.email },
-  //   mode: 'onChange',
-  // })
-  // const {
-  //   handleSubmit,
-  //   register,
-  // } = methods
-
-  // const [editUserInfo, setEditUserInfo] = useState(false)
-  // const [apiErrorMessage, setApiErrorMessage] = useState(
-  //   apiErrorMessages.userEditError
-  // )
-
-  // useEffect(() => {
-  //   if (editUserInfo) {
-  //     const formInputs = document.querySelectorAll('input')
-  //     formInputs[0].focus()
-  //   }
-  // }, [editUserInfo, isApiError])
-
-  // const getErrorMessage = (err) => {
-  //   if (err.message === 'Validation failed') {
-  //     return `Не корректно введено значение ${err.validation.body.keys.join(
-  //       ', '
-  //     )}`
-  //   } else if (err.message) {
-  //     return err.message
-  //   } else {
-  //     return apiErrorMessages.userEditError
-  //   }
-  // }
-
-  // const editUserInfoHandler = (evt) => {
-  //   evt.preventDefault()
-  //   setIsApiError(false)
-  //   setEditUserInfo(true)
-  //   console.log(123);
-  // }
-
-  // const formSubmitHandler = (data) => {
-  //   onEditUserInfo(data)
-  //     .then(() => {
-  //       setEditUserInfo(false)
-  //       console.log(555);
-  //     })
-  //     .catch((err) => {
-  //       setIsApiError(true)
-  //       const message = getErrorMessage(err)
-  //       setApiErrorMessage(message)
-  //     })
-  //     .finally(() => {
-  //       setIsApiError(true)
-  //     })
-  // }
+  
 
   const [name, setName] = useState(currentUser.name)
   const [editName, setEditName] = useState(currentUser.name)

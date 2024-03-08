@@ -1,6 +1,7 @@
 import './InputSearch.css'
+import React from 'react'
 
-export default function MyInput({
+export default function InputSearch({
   register,
   name,
   registerOptions,
