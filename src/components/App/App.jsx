@@ -29,6 +29,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(JSON.parse(loggedInFromStorage))
   const [moviesList, setMoviesList] = useState([])
   const [savedMoviesList, setSavedMoviesList] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
 
   const [currentUser, setCurrentUser] = useState({})
 

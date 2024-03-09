@@ -1,7 +1,10 @@
 import { useMemo } from 'react'
 
 export const useCountToShow = (
-  width, tabletWidth, desktopWidth, mobileCount, tabletCount, desktopCount, mobileStep, tabletStep, desktopStep
+  width,
+  { tabletWidth, desktopWidth },
+  { mobileCount, tabletCount, desktopCount },
+  { mobileStep, tabletStep, desktopStep }
 ) => {
   const nextCount = useMemo(() => {
     if (width >= tabletWidth && width < desktopWidth) {

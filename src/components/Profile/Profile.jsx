@@ -1,15 +1,17 @@
 import './Profile.css'
 import Header from '../Header/Header'
 
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 
 import { CurrentUserContext } from './../../contexts/CurrentUserContext'
+
+import mainApi from '../../utils/MainApi.js'
+
 
 export default function Profile({
   onLogout,
 }) {
   const { currentUser } = useContext(CurrentUserContext)
-  
 
   const [name, setName] = useState(currentUser.name)
   const [editName, setEditName] = useState(currentUser.name)

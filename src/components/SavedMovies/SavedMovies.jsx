@@ -2,7 +2,7 @@ import './SavedMovies.css'
 import SearchForm from '../SearchForm/SearchForm'
 import MoviesCardList from '../MoviesCardList/MoviesCardList'
 
-import React, { useState, useContext, useEffect } from 'react'
+import { useState, useContext, useEffect } from 'react'
 
 import { MoviesContext } from '../../contexts/MoviesContext'
 
@@ -43,7 +43,7 @@ export default function SavedMovies() {
     filterMoviesHandler(savedMoviesList, newMoviesFilter)
   }
 
-  const handleFilterMovies = (e) => {
+  const isShortChangeHandler = (e) => {
     const newMoviesFilter = { ...moviesFilter, isShort: e.target.checked }
     setMoviesFilter(newMoviesFilter)
 
@@ -59,7 +59,7 @@ export default function SavedMovies() {
       <main className="main">
         <SearchForm
           onSearchFormSubmit={searchFormSubmitHandler}
-          onHandleShortChange={handleFilterMovies}
+          onIsShortChangeHandler={isShortChangeHandler}
           moviesFilter={moviesFilter}
         />
         {savedMoviesList.length !== 0 && (

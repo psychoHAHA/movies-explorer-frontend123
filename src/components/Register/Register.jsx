@@ -28,6 +28,18 @@ export default function Register({ onRegister }) {
     onRegister(name, email, password)
   }
 
+  // const [name, setName] = useState('')
+  // const [email, setEmail] = useState('')
+  // const [password, setPassword] = useState('')
+  // const navigate = useNavigate()
+
+  // const handleSubmit = (evt) => {
+  //   evt.preventDefault()
+  //     onRegister({ name, email, password }).then(() => {
+  //       navigate('/signin')
+  //     }).catch((error) => console.log(error))
+  // }
+
   return (
     <div className="auth">
       <Link to="/" className="auth__link">

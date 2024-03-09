@@ -1,7 +1,5 @@
 import './SearchForm.css'
 
-import React from 'react'
-
 import { useForm } from 'react-hook-form'
 
 import InputSearch from '../InputSearch/InputSearch'
@@ -39,13 +37,12 @@ export default function SearchForm({
             placeholder="Фильм"
           />
           <ButtonSearch />
-
-          <FilterCheckbox
-            name={'isShort'}
-            register={register}
-            onCheckboxChange={onHandleShortChange}
-          />
         </form>
+        <FilterCheckbox
+          name={'isShort'}
+          register={register}
+          onCheckboxChange={onHandleShortChange}
+        />
       </section>
     </>
   )

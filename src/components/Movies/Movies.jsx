@@ -11,53 +11,57 @@ import ButtonMore from './../ButtonMore/ButtonMore'
 import { useViewport } from './../../hooks/useViewport'
 import { useCountToShow } from './../../hooks/useCountToShow'
 
-import { filterMoviesName, filterMovies } from './../../utils/filterMovies.js'
+import {
+  filterMoviesName,
+  filterMovies,
+} from './../../utils/filterMovies.js'
 
 import { CONFIG } from './../../constants/config.js'
 
 const { screenBreakPoints, initialCountToShow, stepsToShow } = CONFIG
 
 export default function Movies({ getAllMovies }) {
+
   const { moviesList } = useContext(MoviesContext)
 
   const { width } = useViewport()
-
-  const { initialCount, nextCount } = useCountToShow({
+  
+  const { initialCount, nextCount } = useCountToShow(
     width,
     screenBreakPoints,
     initialCountToShow,
-    stepsToShow,
-  })
+    stepsToShow
+  )
 
   const getPathName = () => {
-    return document.location.pathname.split('/')[1]
-  }
-
+    return document.location.pathname.split("/")[1];
+  };
+  
   const setMovieSearch = (searchQuery) => {
-    const path = getPathName()
-
-    localStorage.setItem(`search-query_${path}`, JSON.stringify(searchQuery))
-  }
-
+    const path = getPathName();
+  
+    localStorage.setItem(`search-query_${path}`, JSON.stringify(searchQuery));
+  };
+  
   const setSearchedMoviesData = (movies) => {
-    const path = getPathName()
-
+    const path = getPathName();
+  
     if (movies) {
-      localStorage.setItem(`searched_${path}`, JSON.stringify(movies))
+      localStorage.setItem(`searched_${path}`, JSON.stringify(movies));
     }
-  }
-
+  };
+  
   const getMoviesSearchQuery = () => {
-    const path = getPathName()
-
-    return JSON.parse(localStorage.getItem(`search-query_${path}`))
-  }
-
+    const path = getPathName();
+  
+    return JSON.parse(localStorage.getItem(`search-query_${path}`));
+  };
+  
   const getSearchedMoviesData = () => {
-    const path = getPathName()
-
-    return JSON.parse(localStorage.getItem(`searched_${path}`))
-  }
+    const path = getPathName();
+  
+    return JSON.parse(localStorage.getItem(`searched_${path}`));
+  };
 
   const [isCompleted, setIsCompleted] = useState(true)
 
@@ -79,7 +83,7 @@ export default function Movies({ getAllMovies }) {
       searchedMoviesFormStore.length !== 0 &&
       searchedMoviesFormStore
     ) {
-      filteredMovies(searchedMoviesFormStore, searchQueryFormStore)
+      handleFilterMovies(searchedMoviesFormStore, searchQueryFormStore)
     }
   }, [])
 
@@ -122,7 +126,7 @@ export default function Movies({ getAllMovies }) {
           setMovieSearch(newMoviesFilter)
           setMoviesFilter(newMoviesFilter)
 
-          filteredMovies(adaptedMovies, newMoviesFilter)
+          handleFilterMovies(adaptedMovies, newMoviesFilter)
         })
         .catch((err) => {
           console.error(err)
@@ -131,23 +135,23 @@ export default function Movies({ getAllMovies }) {
       setMovieSearch(newMoviesFilter)
       setMoviesFilter(newMoviesFilter)
 
-      filteredMovies(moviesList, newMoviesFilter)
+      handleFilterMovies(moviesList, newMoviesFilter)
     }
   }
 
-  const handleFilterMovies = (e) => {
+  const handleShortChange = (e) => {
     const newMoviesFilter = { ...moviesFilter, isShort: e.target.checked }
     setMoviesFilter(newMoviesFilter)
     setMovieSearch(newMoviesFilter)
 
-    const filteredMoviesByName = filterMovies(
+    const filteredMoviesByNameAndShort = filterMovies(
       searchedMovies,
       newMoviesFilter.isShort
     )
-    setMoviesToRender(filteredMoviesByName)
+    setMoviesToRender(filteredMoviesByNameAndShort)
   }
 
-  const filteredMovies = (movies, filterQuery) => {
+  const handleFilterMovies = (movies, filterQuery) => {
     const filteredMoviesByName = filterMoviesName(movies, filterQuery.query)
     setSearchedMovies(filteredMoviesByName)
     if (!filterQuery.isShort) {
@@ -165,7 +169,7 @@ export default function Movies({ getAllMovies }) {
     <main className="main">
       <SearchForm
         onSearchFormSubmit={handleSearchFormSubmit}
-        onHandleShortChange={handleFilterMovies}
+        onHandleShortChange={handleShortChange}
         moviesFilter={moviesFilter}
       />
       <section className="movies">
@@ -176,4 +180,3 @@ export default function Movies({ getAllMovies }) {
     </main>
   )
 }
-

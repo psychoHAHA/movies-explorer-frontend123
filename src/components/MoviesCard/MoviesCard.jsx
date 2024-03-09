@@ -1,6 +1,6 @@
 import './MoviesCard.css'
 
-import React, { useState, useContext, useEffect } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
 import { MoviesContext } from './../../contexts/MoviesContext'

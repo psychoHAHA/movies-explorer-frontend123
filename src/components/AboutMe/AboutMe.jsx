@@ -1,4 +1,3 @@
-import React from "react"
 import "./AboutMe.css"
 import photo from "../../images/me.png"
 import "./AboutMe.css"
@@ -16,7 +15,7 @@ export default function AboutMe() {
             <p className="about-me__info">
               Я родился и живу в Екатеринбурге, учусь на строительном
               факультете. В свободное время читаю книги, смотрю фильмы, играю в
-              видеоигры, играю в футбол. Недавно начал кодить. С апреля 2023
+              видеоигры, занимаюсь футболом. Недавно начал кодить. С апреля 2023
               года прохожу курс по веб-разработке, сейчас пишу диплом.
             </p>
             <div className="about-me__links">

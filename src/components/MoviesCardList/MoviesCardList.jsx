@@ -1,6 +1,5 @@
 import MoviesCard from '../MoviesCard/MoviesCard'
 import './MoviesCardList.css'
-import React from 'react';
 
 export default function MoviesCardList({ moviesToShow }) {
   return (

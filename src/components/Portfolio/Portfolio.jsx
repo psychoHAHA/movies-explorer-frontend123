@@ -1,4 +1,3 @@
-import React from "react"
 import "./Portfolio.css"
 import linkImage from "../../images/linkImage.svg"
 

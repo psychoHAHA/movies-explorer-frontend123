@@ -8,6 +8,7 @@
 
 ## Ссылки
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 ### Frontend: (https://github.com/psychoHAHA/movies-explorer-frontend)
 =======
@@ -30,3 +31,6 @@
 ### Backend: https://api.psychodelic.movie.nomoredomainsmonster.ru/
 >>>>>>> Stashed changes
 >>>>>>> main
+=======
+### Frontend: (https://github.com/psychoHAHA/movies-explorer-frontend)
+>>>>>>> parent of f36c79a (123)
