@@ -1,9 +1,5 @@
-import "./ButtonMore.css"
+import './ButtonMore.css'
 
-export default function ButtonMore() {
-  return (
-    <>
-      <button className="button-more">Еще</button>
-    </>
-  )
+export default function ButtonMore({ ...props }) {
+  return <button className="button-more" {...props}>Еще</button>
 }

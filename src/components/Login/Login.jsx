@@ -1,10 +1,32 @@
-import React from "react"
-import { Link, useLocation } from "react-router-dom"
+import React, { useState } from "react"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import "../Auth/Auth.css"
 import logo from "../../images/logo.svg"
 
-export default function Login() {
-  const location = useLocation()
+export default function Login({ onLogin }) {
+
+  const [formValue, setFormValue] = useState({
+    email: "",
+    password: "",
+  })
+
+  const navigate = useNavigate()
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+
+    setFormValue({
+      ...formValue,
+      [name]: value,
+    })
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const { email, password } = formValue
+    onLogin(email, password)
+  }
+
 
   return (
     <div className="auth">
@@ -13,22 +35,17 @@ export default function Login() {
       </Link>
 
       <h1 className="auth__title">Рады видеть!</h1>
-
-      <form className="auth__form">
+      <form className="auth__form" onSubmit={handleSubmit}>
         <div className="auth__inputs">
           <label className="auth__label">E-mail</label>
-          <input type="email" name="name" className="auth__input" required />
+          <input type="email" name="email" className="auth__input" value={formValue.email} onChange={handleChange} required />
         </div>
         <div className="auth__inputs">
           <label className="auth__label">Пароль</label>
-          <input type="password" name="name" className="auth__input" required />
+          <input type="password" name="password" className="auth__input" value={formValue.password} onChange={handleChange} required />
         </div>
+        <button className="auth__button" type="submit">Войти</button>
       </form>
-      <button className="auth__button" type="submit">Войти</button>
-        <p className="auth__text">
-        Ещё не зарегистрированы?
-        <a href="/signup" className="auth__link" >Регистрация</a>
-        </p>
     </div>
   )
 }

@@ -1,10 +1,11 @@
-import HeaderAuth from "../HeaderAuth/HeaderAuth"
-import HeaderNotAuth from "../HeaderNotAuth/HeaderNotAuth"
+import React from "react"
+import { useContext } from "react"
 
-export default function Navigation({loggedIn}) {
-  // return loggedIn ? <HeaderAuth /> : <HeaderNotAuth />
-  return (
-    // <HeaderAuth />
-    <HeaderNotAuth />
-  )
+import { CurrentUserContext } from "../../contexts/CurrentUserContext"
+import HeaderAuth from "../HeaderAuth/HeaderAuth"
+
+import HeaderNotAuth from "../HeaderNotAuth/HeaderNotAuth"
+export default function Navigation() {
+  const { loggedIn: loggedIn } = useContext(CurrentUserContext)
+  return loggedIn ? <HeaderAuth /> : <HeaderNotAuth />
 }

@@ -1,30 +1,48 @@
-import "./SearchForm.css"
+import './SearchForm.css'
 
-export default function SearchForm() {
+import { useForm } from 'react-hook-form'
+
+import InputSearch from '../InputSearch/InputSearch'
+import ButtonSearch from '../ButtonSearch/ButtonSearch'
+import FilterCheckbox from '../FilterCheckbox/FilterCheckbox'
+
+export default function SearchForm({
+  onSearchFormSubmit,
+  onHandleShortChange,
+  moviesFilter,
+}) {
+  const methods = useForm({
+    defaultValues: {
+      search: moviesFilter.query,
+      isShort: moviesFilter.isShort,
+    },
+    value: { search: moviesFilter.query, isShort: moviesFilter.isShort },
+    mode: 'onSubmit',
+  })
+
+  const { handleSubmit, register } = methods
+
   return (
     <>
       <section className="search-form">
-        <form className="search-form__form">
-          <input
-            className="search-form__input"
+        <form
+          className="search-form__form"
+          onSubmit={handleSubmit(onSearchFormSubmit)}
+        >
+          <InputSearch
+            register={register}
+            name="search"
             type="search"
-            placeholder="Фильмы"
-            required
+            className="search-form__input"
+            placeholder="Фильм"
           />
-          <button className="search-form__button" type="submit"></button>
+          <ButtonSearch />
         </form>
-
-        <div className="search-form__container">
-          <label className="search-form__checkboxs" htmlFor="checkbox">
-            <input
-              type="checkbox"
-              id="checkbox"
-              className="search-form__checkbox"
-            />
-            <span className="auth__input-error"></span>
-            <span className="search-form__span">Короткометражки</span>
-          </label>
-        </div>
+        <FilterCheckbox
+          name={'isShort'}
+          register={register}
+          onCheckboxChange={onHandleShortChange}
+        />
       </section>
     </>
   )
